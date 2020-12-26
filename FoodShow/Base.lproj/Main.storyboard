@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="JYC-QM-x9t">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="JYC-QM-x9t">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
-        <capability name="Image references" minToolsVersion="11.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -35,7 +32,7 @@
         <!--Главная-->
         <scene sceneID="AEF-KA-BdA">
             <objects>
-                <tableViewController title="Главная" id="BOE-8h-Eh3" sceneMemberID="viewController">
+                <tableViewController title="Главная" id="BOE-8h-Eh3" customClass="HomeVC" customModule="FoodShow" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="AGm-3f-v5H">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -72,7 +69,6 @@
                                                     <color key="tintColor" red="0.94509803920000002" green="0.74117647060000003" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <state key="normal">
                                                         <color key="titleColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <imageReference key="image" image="magnifyingglass" catalog="system" symbolScale="default"/>
                                                     </state>
                                                 </button>
                                             </subviews>
@@ -229,8 +225,8 @@
                     <view key="view" contentMode="scaleToFill" id="1i6-vh-Wsp">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="zVZ-D5-03s"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="cYP-Qc-Era"/>
                 </viewController>
@@ -262,7 +258,7 @@
         <scene sceneID="3bv-rp-7dM">
             <objects>
                 <navigationController id="dsA-3j-Bgz" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Избранное" image="bookmark.circle" catalog="system" id="Pfy-8e-UvD">
+                    <tabBarItem key="tabBarItem" title="Избранное" id="Pfy-8e-UvD">
                         <color key="badgeColor" red="0.90980392160000001" green="0.48627450979999998" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
                     </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="jy8-oj-AFB">
@@ -302,12 +298,8 @@
     </scenes>
     <resources>
         <image name="book.circle" catalog="system" width="128" height="121"/>
-        <image name="bookmark.circle" catalog="system" width="128" height="121"/>
         <image name="demoImg" width="213" height="200"/>
         <image name="equal.circle" catalog="system" width="128" height="121"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

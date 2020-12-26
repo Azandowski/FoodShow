@@ -9,15 +9,18 @@
 import UIKit
 
 class HomeVC: UITableViewController {
+    
+
+       let networkService = NetworkService()
+       var collectionTitleString: String = ""
+       var items: [Recipe] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        NetworkService.request(router: Router.getRandom) { (result: [String : [Recipe]]) in
+            self.items = result["recipes"]!
+            print(self.items.last?.title)
+        }
     }
 
     // MARK: - Table view data source
