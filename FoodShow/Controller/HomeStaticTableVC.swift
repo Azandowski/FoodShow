@@ -1,27 +1,33 @@
 //
-//  HomeVC.swift
+//  HomeStaticTableVC.swift
 //  FoodShow
 //
-//  Created by Aigerim Ilipova on 26.12.2020.
+//  Created by Aigerim Ilipova on 28.12.2020.
 //  Copyright © 2020 TeamOfFour. All rights reserved.
 //
 
 import UIKit
 
-class HomeVC: UITableViewController {
+class HomeStaticTableVC: UITableViewController {
+    @IBOutlet weak var searchField: UITextField!
+    @IBOutlet weak var filterSegmented: UITableViewCell!
     
-
-       let networkService = NetworkService()
-       var collectionTitleString: String = ""
-       var items: [Recipe] = []
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        NetworkService.request(router: Router.getRandom) { (result: [String : [Recipe]]) in
-            self.items = result["recipes"]!
-            print(self.items.last?.title)
-        }
+
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+
+        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        filterSegmented.isHidden = true
     }
+    
+    @IBAction func searchFieldFocus(_ sender: UITextField) {
+        filterSegmented.isHidden = false
+    }
+    
 
     // MARK: - Table view data source
 
