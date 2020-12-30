@@ -19,8 +19,8 @@ class HomeTableVC: UITableViewController {
         super.viewDidLoad()
         NetworkService.request(router: Router.getRandom) { (result: [String : [Recipe]]) in
             self.items = result["recipes"]!
-            print(self.items.last?.title)
-        }
+            self.tableView.reloadData()
+         }
     }
 
     // MARK: - Table view data source
@@ -39,8 +39,9 @@ class HomeTableVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)
-        
-//        cell.textLabel?.text = items.title
+        if items.count != 0{
+            cell.textLabel?.text = items[indexPath.row].title
+        }
         
 
         return cell

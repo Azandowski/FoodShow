@@ -22,12 +22,12 @@ struct Recipe: Codable {
     let creditsText, license, sourceName: String
     let pricePerServing: Double
     let extendedIngredients: [ExtendedIngredient]
-    let id: Int
+    let id: Int?
     let title: String
     let readyInMinutes, servings: Int
     let sourceURL: String
-    let image: String
-    let imageType, summary: String
+    let image: String?
+    let imageType, summary: String?
     let cuisines, dishTypes, diets, occasions: [String]
     let instructions: String
     let analyzedInstructions: [AnalyzedInstruction]
