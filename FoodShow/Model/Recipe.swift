@@ -13,26 +13,26 @@ struct Recipes: Codable {
 }
 
 struct Recipe: Codable {
-    let vegetarian, vegan, glutenFree, dairyFree: Bool
-    let veryHealthy, cheap, veryPopular, sustainable: Bool
-    let weightWatcherSmartPoints: Int
-    let gaps: String
-    let lowFodmap: Bool
-    let aggregateLikes, spoonacularScore, healthScore: Int
-    let creditsText, license, sourceName: String
-    let pricePerServing: Double
-    let extendedIngredients: [ExtendedIngredient]
-    let id: Int
-    let title: String
-    let readyInMinutes, servings: Int
-    let sourceURL: String
-    let image: String
-    let imageType, summary: String
-    let cuisines, dishTypes, diets, occasions: [String]
-    let instructions: String
-    let analyzedInstructions: [AnalyzedInstruction]
+    let vegetarian, vegan, glutenFree, dairyFree: Bool?
+    let veryHealthy, cheap, veryPopular, sustainable: Bool?
+    let weightWatcherSmartPoints: Int?
+    let gaps: String?
+    let lowFodmap: Bool?
+    let aggregateLikes, spoonacularScore, healthScore: Int?
+    let creditsText, license, sourceName: String?
+    let pricePerServing: Double?
+    let extendedIngredients: [ExtendedIngredient]?
+    let id: Int?
+    let title: String?
+    let readyInMinutes, servings: Int?
+    let sourceURL: String?
+    let image: String?
+    let imageType, summary: String?
+    let cuisines, dishTypes, diets, occasions: [String]?
+    let instructions: String?
+    let analyzedInstructions: [AnalyzedInstruction]?
     let originalID: JSONNull?
-    let spoonacularSourceURL: String
+    let spoonacularSourceURL: String?
     let preparationMinutes, cookingMinutes: Int?
 
     enum CodingKeys: String, CodingKey {
@@ -46,36 +46,36 @@ struct Recipe: Codable {
 }
 
 struct AnalyzedInstruction: Codable {
-    let name: String
-    let steps: [Step]
+    let name: String?
+    let steps: [Step]?
 }
 
 struct Step: Codable {
-    let number: Int
-    let step: String
-    let ingredients, equipment: [Ent]
+    let number: Int?
+    let step: String?
+    let ingredients, equipment: [Ent]?
     let length: Length?
 }
 
 struct Ent: Codable {
-    let id: Int
-    let name, localizedName, image: String
+    let id: Int?
+    let name, localizedName, image: String?
 }
 
 struct Length: Codable {
-    let number: Int
-    let unit: String
+    let number: Int?
+    let unit: String?
 }
 
 struct ExtendedIngredient: Codable {
-    let id: Int
+    let id: Int?
     let aisle, image: String?
-    let consistency: Consistency
-    let name, original, originalString, originalName: String
-    let amount: Double
-    let unit: String
-    let meta, metaInformation: [String]
-    let measures: Measures
+    let consistency: Consistency?
+    let name, original, originalString, originalName: String?
+    let amount: Double?
+    let unit: String?
+    let meta, metaInformation: [String]?
+    let measures: Measures?
 }
 
 enum Consistency: String, Codable {
@@ -84,12 +84,12 @@ enum Consistency: String, Codable {
 }
 
 struct Measures: Codable {
-    let us, metric: Metric
+    let us, metric: Metric?
 }
 
 struct Metric: Codable {
-    let amount: Double
-    let unitShort, unitLong: String
+    let amount: Double?
+    let unitShort, unitLong: String?
 }
 
 

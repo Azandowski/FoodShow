@@ -13,7 +13,7 @@ enum Router {
     case getRandom
     
     var accessToken: String {
-        return "6c2f2b1eded0428582f6add38a448913"
+        return "7fc7a140de7a412aa0a77cf1e7a6d502"
     }
     
     
