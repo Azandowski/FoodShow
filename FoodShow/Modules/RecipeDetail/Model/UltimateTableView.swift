@@ -11,16 +11,19 @@ import UIKit
 typealias MessageCellConfig = TableCellConfigurator<MessageCell, String>
 typealias ImageCellConfig = TableCellConfigurator<ImageCell, URL?>
 typealias StepCellConfig = TableCellConfigurator<StepCell, Step?>
+typealias DetailStackConfig = TableCellConfigurator<DetailStackView, Recipe>
+typealias SimilarListConfig = TableCellConfigurator<SimilarListCell, Int>
+
 class TableViewModel {
     var recipe: Recipe!
     
     init(recipe:Recipe) {
         self.recipe = recipe
-        for step in recipe.analyzedInstructions[0].steps {
-            print(step.step)
+        items.append(DetailStackConfig.init(item: recipe))
+        for step in recipe.analyzedInstructions![0].steps {
             items.append(StepCellConfig.init(item: step))
         }
-        items.append(ImageCellConfig.init(item: URL(string: recipe.image ?? "")))
+        items.append(SimilarListConfig.init(item: recipe.id))
     }
     
     var items: [CellConfigurator] = []

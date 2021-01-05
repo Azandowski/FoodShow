@@ -7,34 +7,41 @@
 //
 
 import Foundation
+import SDWebImageSVGCoder
 
 struct Recipes: Codable {
     let recipes: [Recipe]
 }
 
 struct Recipe: Codable {
-    let vegetarian, vegan, glutenFree, dairyFree: Bool
-    let veryHealthy, cheap, veryPopular, sustainable: Bool
-    let weightWatcherSmartPoints: Int
-    let gaps: String
-    let lowFodmap: Bool
-    let aggregateLikes, spoonacularScore, healthScore: Int
-    let creditsText, license, sourceName: String
-    let pricePerServing: Double
-    let extendedIngredients: [ExtendedIngredient]
-    let id: Int?
+    let vegetarian, vegan, glutenFree, dairyFree: Bool?
+    let veryHealthy, cheap, veryPopular, sustainable: Bool?
+    let weightWatcherSmartPoints: Int?
+    let gaps: String?
+    let lowFodmap: Bool?
+    let aggregateLikes, spoonacularScore, healthScore: Int?
+    let creditsText, license, sourceName: String?
+    let pricePerServing: Double?
+    let extendedIngredients: [ExtendedIngredient?]?
+    let id: Int
     let title: String
     let readyInMinutes, servings: Int
-    let sourceURL: String
+    let sourceURL: String?
     let image: String?
     let imageType, summary: String?
-    let cuisines, dishTypes, diets, occasions: [String]
-    let instructions: String
-    let analyzedInstructions: [AnalyzedInstruction]
+    let cuisines, dishTypes, diets, occasions: [String]?
+    let instructions: String?
+    let analyzedInstructions: [AnalyzedInstruction]?
     let originalID: JSONNull?
-    let spoonacularSourceURL: String
+    let spoonacularSourceURL: String?
     let preparationMinutes, cookingMinutes: Int?
 
+    func fetchUmage () -> UIImage? {
+        let image = UIImageView()
+        image.sd_setImage(with: URL(string: self.image!))
+        return image.image
+    }
+    
     enum CodingKeys: String, CodingKey {
         case vegetarian, vegan, glutenFree, dairyFree, veryHealthy, cheap, veryPopular, sustainable, weightWatcherSmartPoints, gaps, lowFodmap, aggregateLikes, spoonacularScore, healthScore, creditsText, license, sourceName, pricePerServing, extendedIngredients, id, title, readyInMinutes, servings
         case sourceURL = "sourceUrl"
@@ -68,9 +75,9 @@ struct Length: Codable {
 }
 
 struct ExtendedIngredient: Codable {
-    let id: Int
+    let id: Int?
     let aisle, image: String?
-    let consistency: Consistency
+    let consistency: Consistency?
     let name, original, originalString, originalName: String
     let amount: Double
     let unit: String

@@ -52,10 +52,10 @@ class AnimatedHeader: UIView {
     var recipe: Recipe!
 
     init(recipe:Recipe){
-        super.init(frame:.zero)
+         super.init(frame:.zero)
          self.recipe = recipe
-        self.addSubview(animatedView)
-        animatedView.snp.makeConstraints { (make) in
+         self.addSubview(animatedView)
+         animatedView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
      }
@@ -64,8 +64,6 @@ class AnimatedHeader: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-     
-      
        lazy var overlayView: UIView = {
           let overlayView = UIView()
           overlayView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
@@ -172,4 +170,190 @@ class StepCell: UITableViewCell, ConfigurableCell {
         self.labelStep.text = instructuon?.step
     }
 }
+
+class SimilarListCell: UITableViewCell, ConfigurableCell {
+    
+    var recipesAll: [Recipe]?
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(similarCollectionView)
+        similarCollectionView.snp.makeConstraints { (make) in
+            make.height.equalTo(100)
+            make.width.equalToSuperview()
+        }
+
+        similarCollectionView.delegate = self
+        similarCollectionView.dataSource = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    fileprivate let similarCollectionView: UICollectionView = {
+              let layout = UICollectionViewFlowLayout()
+              layout.scrollDirection = .horizontal
+              let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+              cv.backgroundColor = .black
+              cv.register(RecipeCell.self, forCellWithReuseIdentifier: "cell")
+           return cv
+          }()
+    
+    func configure(data id: Int) {
+        if(self.recipesAll == nil){
+            NetworkService.request(router: Router.getSimilar, id: id) { (result: [String? : [Recipe]]) in
+                self.recipesAll = result["recipies"]!
+                self.similarCollectionView.reloadData()
+            }
+        }
+    }
+}
+
+extension SimilarListCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+         if recipesAll != nil{
+           return recipesAll!.count
+         }else{
+            return 0
+         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RecipeCell
+        cell.recipe = recipesAll![indexPath.row]
+        cell.backgroundColor = .green
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGSize {
+        return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/2)
+    }
+}
+
+class RecipeCell: UICollectionViewCell{
+    
+    var recipe: Recipe!
+    
+    override init(frame: CGRect) {
+        super.init(frame:frame)
+        contentView.addSubview(pictureView)
+        pictureView.snp.makeConstraints { (make) in
+            make.width.equalTo(50)
+            make.height.equalTo(100)
+        }
+    }
+    
+   fileprivate var pictureView: UIImageView = {
+    let image = UIImageView()
+    image.translatesAutoresizingMaskIntoConstraints = false
+    image.contentMode = .scaleAspectFill
+    image.clipsToBounds = true
+    image.layer.cornerRadius = 12
+    image.sd_setImage(with: URL(string: "https://spoonacular.com/recipeImages/659782-556x370.jpg"))
+        return image
+    }()
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class DetailStackView: UITableViewCell, ConfigurableCell {
+    
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setUpViews()
+    }
+    
+    private func setUpViews () {
+        self.contentView.addSubview(detailStackView)
+        detailStackView.snp.makeConstraints { (make) in
+                   make.edges.equalToSuperview()
+               }
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var detailStackView: UIStackView = {
+          let stackView          = UIStackView()
+          stackView.axis         = .horizontal
+          stackView.distribution = .fillEqually
+          stackView.spacing      =  16
+          return stackView
+      }()
+    
+    func configure(data recipe: Recipe) {
+        if detailStackView.subviews.count < 3 {
+          addDetailViews(recipe: recipe)
+        }
+    }
+    
+    func addDetailViews(recipe: Recipe){
+        
+        for i in 1...3{
+            
+            let detailText: UILabel = {
+                let text = UILabel()
+                text.font = .systemFont(ofSize: 18, weight: .medium)
+                text.numberOfLines = 1
+                text.textColor = .white
+                text.textAlignment = .center
+                return text
+            }()
+            
+            let iconView: UIImageView = {
+                let image = UIImageView()
+                image.contentMode = .scaleAspectFit
+                image.tintColor = .white
+                return image
+            }()
+            
+            let labelIconStack: UIStackView = {
+                        let stackView          = UIStackView()
+                        stackView.axis         = .vertical
+                        stackView.distribution = .equalCentering
+                        stackView.spacing      =  16
+                        return stackView
+                    }()
+            
+            detailText.text = returnNeedText(recipe: recipe,id: i)
+            let paperPlane = UIImage(systemName: returnIconName(id: i))
+            paperPlane?.withTintColor(.white)
+            iconView.image = paperPlane
+            iconView.snp.makeConstraints { (make) in
+                make.height.equalTo(40)
+            }
+            labelIconStack.addArrangedSubview(iconView)
+            labelIconStack.addArrangedSubview(detailText)
+            detailStackView.addArrangedSubview(labelIconStack)
+        }
+    }
+    
+    func returnNeedText(recipe:Recipe, id: Int)->String{
+        switch id {
+        case 1:
+            return "Persons: \(recipe.servings)"
+        case 2:
+            return "\(recipe.readyInMinutes) minutes"
+        default:
+            return "Rating: \(recipe.spoonacularScore)%"
+        }
+    }
+    
+    func returnIconName(id: Int)->String{
+        switch id {
+        case 1:
+            return "person.circle.fill"
+        case 2:
+            return "clock.fill"
+        default:
+            return "star.circle.fill"
+        }
+    }
+
+}
+
 

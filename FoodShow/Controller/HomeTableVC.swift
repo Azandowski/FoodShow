@@ -17,7 +17,7 @@ class HomeTableVC: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        NetworkService.request(router: Router.getRandom) { (result: [String : [Recipe]]) in
+        NetworkService.request(router: Router.getRandom,id: 0) { (result: [String? : [Recipe]]) in
             self.items = result["recipes"]!
             self.tableView.reloadData()
          }
@@ -32,8 +32,14 @@ class HomeTableVC: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 5
+        return items.count
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = RecipeDetailViewController(recipe: items[indexPath.row])
+        self.navigationController?.pushViewController(vc, animated: true)
+           
+       }
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -42,6 +48,7 @@ class HomeTableVC: UITableViewController {
         if items.count != 0{
             cell.textLabel?.text = items[indexPath.row].title
         }
+        
         
 
         return cell
