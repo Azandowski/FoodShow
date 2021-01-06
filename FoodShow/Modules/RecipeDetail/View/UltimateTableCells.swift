@@ -171,6 +171,35 @@ class StepCell: UITableViewCell, ConfigurableCell {
     }
 }
 
+class ButtonCell: UITableViewCell, ConfigurableCell {
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setUpViews()
+    }
+    
+    private func setUpViews () {
+        self.contentView.addSubview(buttonUI)
+        buttonUI.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+            make.height.equalTo(55)
+       }
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var buttonUI: UIButton = {
+          let button = UIButton()
+          button.backgroundColor = .purple
+          return button
+      }()
+    
+    func configure(data item: String) {
+        self.buttonUI.setTitle(item, for: .normal)
+    }
+}
+
 class SimilarListCell: UITableViewCell, ConfigurableCell {
     
     var recipesAll: [Recipe]?
@@ -179,7 +208,8 @@ class SimilarListCell: UITableViewCell, ConfigurableCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(similarCollectionView)
         similarCollectionView.snp.makeConstraints { (make) in
-            make.height.equalTo(100)
+            make.edges.equalToSuperview()
+            make.height.equalTo(250)
             make.width.equalToSuperview()
         }
 
@@ -193,7 +223,9 @@ class SimilarListCell: UITableViewCell, ConfigurableCell {
     
     fileprivate let similarCollectionView: UICollectionView = {
               let layout = UICollectionViewFlowLayout()
+              layout.minimumInteritemSpacing = 24
               layout.scrollDirection = .horizontal
+              layout.itemSize = CGSize(width: 200, height: 220)
               let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
               cv.backgroundColor = .black
               cv.register(RecipeCell.self, forCellWithReuseIdentifier: "cell")
@@ -239,17 +271,16 @@ class RecipeCell: UICollectionViewCell{
         super.init(frame:frame)
         contentView.addSubview(pictureView)
         pictureView.snp.makeConstraints { (make) in
-            make.width.equalTo(50)
-            make.height.equalTo(100)
+            make.edges.equalToSuperview()
         }
     }
     
    fileprivate var pictureView: UIImageView = {
     let image = UIImageView()
-    image.translatesAutoresizingMaskIntoConstraints = false
     image.contentMode = .scaleAspectFill
     image.clipsToBounds = true
     image.layer.cornerRadius = 12
+    image.layer.masksToBounds = true
     image.sd_setImage(with: URL(string: "https://spoonacular.com/recipeImages/659782-556x370.jpg"))
         return image
     }()
@@ -258,6 +289,8 @@ class RecipeCell: UICollectionViewCell{
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+
 
 class DetailStackView: UITableViewCell, ConfigurableCell {
     

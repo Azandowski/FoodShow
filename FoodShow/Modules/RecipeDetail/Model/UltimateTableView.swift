@@ -13,6 +13,8 @@ typealias ImageCellConfig = TableCellConfigurator<ImageCell, URL?>
 typealias StepCellConfig = TableCellConfigurator<StepCell, Step?>
 typealias DetailStackConfig = TableCellConfigurator<DetailStackView, Recipe>
 typealias SimilarListConfig = TableCellConfigurator<SimilarListCell, Int>
+typealias ButtonCellConfig = TableCellConfigurator<ButtonCell, String>
+
 
 class TableViewModel {
     var recipe: Recipe!
@@ -20,8 +22,11 @@ class TableViewModel {
     init(recipe:Recipe) {
         self.recipe = recipe
         items.append(DetailStackConfig.init(item: recipe))
-        for step in recipe.analyzedInstructions![0].steps {
-            items.append(StepCellConfig.init(item: step))
+        items.append(ButtonCellConfig.init(item: "Add to Favorites"))
+        if recipe.analyzedInstructions!.count > 0{
+            for step in recipe.analyzedInstructions![0].steps {
+                       items.append(StepCellConfig.init(item: step))
+                   }
         }
         items.append(SimilarListConfig.init(item: recipe.id))
     }

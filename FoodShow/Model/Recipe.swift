@@ -22,7 +22,7 @@ struct Recipe: Codable {
     let aggregateLikes, spoonacularScore, healthScore: Int?
     let creditsText, license, sourceName: String?
     let pricePerServing: Double?
-    let extendedIngredients: [ExtendedIngredient?]?
+    let extendedIngredients: [ExtendedIngredient]?
     let id: Int
     let title: String
     let readyInMinutes, servings: Int
