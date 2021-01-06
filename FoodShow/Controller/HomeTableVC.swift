@@ -21,6 +21,32 @@ class HomeTableVC: UITableViewController {
             self.items = result["recipes"]!
             self.tableView.reloadData()
          }
+        
+          
+//            let RL = RecipeLocalService()
+            
+         // удаление по id рецепта
+        //    RL.removeRecipes(with: 715477)
+            
+        // получение рецептов из базы локальной
+            
+//            RL.getAllRecipe(completion: { result in
+//                switch result {
+//                case .failure(let error):
+//                    print(error)
+//                case .success(let recipe):
+//                    print(recipe)
+//                }
+//                //проверял сколько объектов в базе, можно будет удалить после проверки
+//                print(try! result.get().count)
+//
+//            })
+            // конвертирование структуры в объект реалма
+            //let newReandomRecipe = RL.convertToRecipeLocalObject(with: self.items)
+            
+            //сохранение массива объектов локально в реалм
+            //RL.saveRecipe(with: newReandomRecipe)
+            //print(newReandomRecipe)
     }
 
     // MARK: - Table view data source

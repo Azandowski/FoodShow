@@ -45,6 +45,7 @@ class RecipeDetailViewController: UIViewController {
         tableView.register(StepCell.self, forCellReuseIdentifier:String(describing: StepCell.self))
         tableView.register(DetailStackView.self, forCellReuseIdentifier:String(describing: DetailStackView.self))
         tableView.register(SimilarListCell.self, forCellReuseIdentifier:String(describing: SimilarListCell.self))
+        tableView.register(ButtonCell.self, forCellReuseIdentifier:String(describing: ButtonCell.self))
         tableView.backgroundView?.backgroundColor = .black
         tableView.backgroundColor = .black
         return tableView
@@ -82,6 +83,10 @@ class RecipeDetailViewController: UIViewController {
             self.animatedHeader.titleLbl.font = .systemFont(ofSize: 22, weight: .bold)
         }
     }
+    
+    @objc func buttonAction(sender: UIButton!) {
+      print("LIKE tapped")
+    }
 }
 
     extension RecipeDetailViewController: UITableViewDelegate, UITableViewDataSource{
@@ -102,13 +107,15 @@ class RecipeDetailViewController: UIViewController {
         cell.backgroundColor = .black
       
         item.configure(cell: cell)
-
+        
+        if  viewModel.items[indexPath.section] is ButtonCellConfig{
+            (cell as! ButtonCell).buttonUI.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        }
         return cell
     }
-    
-   
  
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
          let headerStep: UILabel = {
                        let stepText = UILabel()
                        stepText.font = .systemFont(ofSize: 22, weight: .bold)
@@ -119,12 +126,18 @@ class RecipeDetailViewController: UIViewController {
                    }()
         
                if viewModel.items[section] is StepCellConfig {
-                headerStep.text =  "Step: \(section-1 + 1)/\(recipe.analyzedInstructions![0].steps.count)"
+                
+                headerStep.text =  "Step: \(section-2 + 1)/\(recipe.analyzedInstructions![0].steps.count)"
                 return headerStep
+                
+               }else if viewModel.items[section] is SimilarListConfig {
+                
+                headerStep.text =  "Similar Recipies"
+                return headerStep
+                
                }else{
                 return nil
         }
-        
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
             return 40
