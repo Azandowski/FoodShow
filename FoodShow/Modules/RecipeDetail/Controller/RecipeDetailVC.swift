@@ -98,7 +98,7 @@ class RecipeDetailViewController: UIViewController {
             RL.saveRecipe(with: newFavRecipe)
             recipe.isFav = true
             sender.setTitle("Delete from Favorites", for: .normal)
-                sender.backgroundColor = UIColor.green
+            sender.backgroundColor = UIColor.green
             self.viewDidLoad()
             }
           
