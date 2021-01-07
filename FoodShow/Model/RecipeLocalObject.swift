@@ -47,5 +47,7 @@ class RecipeLocalObject : Object{
     @objc dynamic var spoonacularSourceURL: String = ""
     @objc dynamic var preparationMinutes: Int = 0
     @objc dynamic var cookingMinutes: Int = 0
+    //@objc dynamic var isFav: Bool = false
+
 
 }

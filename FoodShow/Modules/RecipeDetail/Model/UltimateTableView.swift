@@ -32,5 +32,7 @@ class TableViewModel {
     }
     
     var items: [CellConfigurator] = []
+    
+    
 }
 

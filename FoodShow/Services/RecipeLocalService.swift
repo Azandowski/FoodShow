@@ -16,6 +16,7 @@ enum NetworkError: Error {
 //интерфейс
 protocol RecipeService: AnyObject {
     func getAllRecipe(completion: @escaping (Result<[RecipeLocalObject], NetworkError>) -> Void)
+    func getRecipeById(with recipeId: Int ,completion: @escaping (Result<[RecipeLocalObject], NetworkError>) -> Void)
     func saveRecipe(with recipesList: [RecipeLocalObject])
     func removeRecipes(with resipeId: Int)
     func convertToRecipeLocalObject(with recipes: [Recipe]) -> [RecipeLocalObject]
@@ -24,20 +25,15 @@ protocol RecipeService: AnyObject {
 
 final class RecipeLocalService: RecipeService {
     
-    func removeRecipes(with resipeId: Int) {
+    func removeRecipes(with recipeId: Int) {
         
-        let filterQuery = String(format: "%@%d", "id = ", resipeId)
+        let filterQuery = String(format: "%@%d", "id = ", recipeId)
         do {
             let realm = try! Realm()
-            print("try....")
             let realmObjectById = realm.objects(RecipeLocalObject.self).filter(filterQuery)
-            print(realmObjectById)
             try! realm.write{
                 realm.delete(realmObjectById)
             }
-            
-        } catch {
-            print(error)
         }
         
     }
@@ -100,6 +96,24 @@ final class RecipeLocalService: RecipeService {
             print(error)
         }
    
+    }
+    
+    
+    func getRecipeById(with recipeId: Int ,completion: @escaping (Result<[RecipeLocalObject], NetworkError>) -> Void){
+        var result = [RecipeLocalObject]()
+        let filterQuery = String(format: "%@%d", "id = ", recipeId)
+        do {
+            let realm = try Realm()
+            let results = realm.objects(RecipeLocalObject.self).filter(filterQuery);
+            result.append(contentsOf: results)
+        } catch {
+            guard let nError = error as? NetworkError else {
+                return
+            }
+            completion(.failure(nError))
+        }
+            completion(.success(result))
+        
     }
     
     func getAllRecipe(completion: @escaping (Result<[RecipeLocalObject], NetworkError>) -> Void) {

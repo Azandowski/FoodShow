@@ -35,6 +35,7 @@ struct Recipe: Codable {
     let originalID: JSONNull?
     let spoonacularSourceURL: String?
     let preparationMinutes, cookingMinutes: Int?
+    var isFav: Bool  =  false
 
     func fetchUmage () -> UIImage? {
         let image = UIImageView()
