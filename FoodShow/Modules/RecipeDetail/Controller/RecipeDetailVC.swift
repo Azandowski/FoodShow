@@ -26,7 +26,7 @@ class RecipeDetailViewController: UIViewController {
     
    
     lazy var viewModel:TableViewModel={
-        var viewModel = TableViewModel(recipe: self.recipe)
+        var viewModel = TableViewModel(recipe: self.recipe,titleLike: "Add To Fav")
         return viewModel
     }()
     
@@ -86,9 +86,15 @@ class RecipeDetailViewController: UIViewController {
     }
     
     @objc func buttonAction(sender: UIButton!) {
+//       if let likeButton =  viewModel.items.first(where: { $0 is ButtonCellConfig }){
+//            (likeButton as! ButtonCellConfig).item = "sms"
+//        }
+        sender.setTitle("Damn", for: .normal)
+        self.viewDidLoad()
         print(recipe.id)
     }
 }
+
 
     extension RecipeDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
@@ -119,7 +125,7 @@ class RecipeDetailViewController: UIViewController {
         
          let headerStep: UILabel = {
                        let stepText = UILabel()
-                       stepText.font = .systemFont(ofSize: 22, weight: .bold)
+                       stepText.font = .systemFont(ofSize: 24, weight: .bold)
                        stepText.numberOfLines = 1
                        stepText.textColor = .white
                        stepText.textAlignment = .left
@@ -134,6 +140,11 @@ class RecipeDetailViewController: UIViewController {
                }else if viewModel.items[section] is SimilarListConfig {
                 
                 headerStep.text =  "Similar Recipies"
+                return headerStep
+                
+               } else if viewModel.items[section] is IngredientsCellConfig {
+                
+                headerStep.text =  "Ingredients"
                 return headerStep
                 
                }else{

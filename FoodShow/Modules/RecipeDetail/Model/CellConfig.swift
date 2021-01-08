@@ -22,7 +22,7 @@ class TableCellConfigurator<CellType: ConfigurableCell, DataType>: CellConfigura
     
     static var reuseId: String { return String(describing: CellType.self) }
     
-    let item: DataType
+    var item: DataType
     
     init(item: DataType) {
         self.item = item

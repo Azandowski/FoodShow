@@ -19,11 +19,12 @@ typealias IngredientsCellConfig = TableCellConfigurator<IngredientsStackView, Re
 
 class TableViewModel {
     var recipe: Recipe!
+    var titleLike: String!
     
-    init(recipe:Recipe) {
+    init(recipe:Recipe,titleLike: String) {
         self.recipe = recipe
         items.append(DetailStackConfig.init(item: recipe))
-        items.append(ButtonCellConfig.init(item: "Add to Favorites"))
+        items.append(ButtonCellConfig.init(item: titleLike))
         items.append(IngredientsCellConfig.init(item: recipe))
         if recipe.analyzedInstructions!.count > 0{
             for step in recipe.analyzedInstructions![0].steps {
@@ -34,5 +35,9 @@ class TableViewModel {
     }
     
     var items: [CellConfigurator] = []
+    
+    func changeLabel(val:String){
+        titleLike = val
+    }
 }
 
