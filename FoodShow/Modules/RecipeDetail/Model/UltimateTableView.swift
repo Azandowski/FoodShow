@@ -14,6 +14,7 @@ typealias StepCellConfig = TableCellConfigurator<StepCell, Step?>
 typealias DetailStackConfig = TableCellConfigurator<DetailStackView, Recipe>
 typealias SimilarListConfig = TableCellConfigurator<SimilarListCell, Int>
 typealias ButtonCellConfig = TableCellConfigurator<ButtonCell, String>
+typealias IngredientsCellConfig = TableCellConfigurator<IngredientsStackView, Recipe>
 
 
 class TableViewModel {
@@ -23,6 +24,7 @@ class TableViewModel {
         self.recipe = recipe
         items.append(DetailStackConfig.init(item: recipe))
         items.append(ButtonCellConfig.init(item: "Add to Favorites"))
+        items.append(IngredientsCellConfig.init(item: recipe))
         if recipe.analyzedInstructions!.count > 0{
             for step in recipe.analyzedInstructions![0].steps {
                        items.append(StepCellConfig.init(item: step))

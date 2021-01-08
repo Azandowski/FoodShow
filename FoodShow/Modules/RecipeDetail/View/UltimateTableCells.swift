@@ -200,6 +200,136 @@ class ButtonCell: UITableViewCell, ConfigurableCell {
     }
 }
 
+class IngredientsStackView: UITableViewCell, ConfigurableCell {
+    
+    var servingsCount: Int = 0 {
+        didSet{
+            servingText.text = "\(servingsCount) servings"
+        }
+    }
+    var twoDoubleFormat = "0.2"
+    
+    var initialServings: Int?
+    
+    var ingredients: [ExtendedIngredient]?
+    
+    let servingText: UILabel = {
+              let text = UILabel()
+              text.font = .systemFont(ofSize: 22, weight: .bold)
+              text.numberOfLines = 1
+              text.textColor = .white
+              text.textAlignment = .left
+              return text
+          }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(ingredientsColumn)
+        ingredientsColumn.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    fileprivate let ingredientsColumn: UIStackView = {
+        var detailStackView: UIStackView = {
+            let column          = UIStackView()
+            column.axis         = .vertical
+            column.distribution = .equalSpacing
+            column.spacing      =  16
+            return column
+        }()
+        
+     return detailStackView
+    }()
+    
+    func configure(data recipe: Recipe) {
+        if recipe.extendedIngredients != nil && ingredientsColumn.subviews.count == 0{
+          initialServings = recipe.servings
+          ingredients = recipe.extendedIngredients
+          servingsCount = recipe.servings
+          ingredientsColumn.addArrangedSubview(addHeader(servings: recipe.servings))
+          addLines(items: recipe.extendedIngredients!)
+        }
+    }
+    
+    func addHeader(servings: Int) -> UIStackView{
+    
+        let stepperUI: UIStepper = {
+            let myUIStepper = UIStepper (frame:CGRect(x: 10, y: 150, width: 0, height: 0))
+            myUIStepper.wraps = true
+            myUIStepper.autorepeat = true
+            myUIStepper.minimumValue = 1
+            myUIStepper.stepValue = 1
+            myUIStepper.value = Double(servings)
+            myUIStepper.tintColor = .white
+            myUIStepper.addTarget(self, action: #selector(self.stepperValueChanged(_:)), for: .valueChanged)
+            myUIStepper.setDecrementImage(myUIStepper.decrementImage(for: .normal), for: .normal)
+            myUIStepper.setIncrementImage(myUIStepper.incrementImage(for: .normal), for: .normal)
+            return myUIStepper
+            }()
+        
+        let labelIconStack: UIStackView = {
+            let stackView          = UIStackView()
+            stackView.axis         = .horizontal
+            stackView.distribution = .equalSpacing
+            stackView.spacing      =  4
+            return stackView
+        }()
+        
+        labelIconStack.addArrangedSubview(servingText)
+        labelIconStack.addArrangedSubview(stepperUI)
+        return labelIconStack
+    }
+    
+    @objc func stepperValueChanged(_ sender:UIStepper!){
+        servingsCount = Int(sender.value)
+        for i in 0 ... ingredientsColumn.arrangedSubviews.count - 1 {
+            if(i != 0){
+                ((ingredientsColumn.arrangedSubviews[i] as! UIStackView).arrangedSubviews[0] as! UILabel).text = Double((ingredients![i-1].amount * Double(servingsCount))/Double(initialServings!)).format(f:"0.2") + " " + ingredients![i-1].unit
+            }
+        }
+    }
+    
+    func addLines(items: [ExtendedIngredient]!){
+        for ingredient in items{
+                          let nameIngredient: UILabel = {
+                              let text = UILabel()
+                              text.font = .systemFont(ofSize: 16, weight: .medium)
+                              text.numberOfLines = 1
+                              text.textColor = .white
+                              text.textAlignment = .left
+                              text.text = ingredient.name
+                              return text
+                          }()
+                   
+                          let unitAndCount: UILabel = {
+                                         let text = UILabel()
+                                         text.font = .systemFont(ofSize: 16, weight: .bold)
+                                         text.numberOfLines = 1
+                                         text.textColor = .white
+                                         text.textAlignment = .left
+                            text.text = "\(ingredient.amount.format(f: twoDoubleFormat))" + " " + ingredient.unit
+                                         return text
+                                     }()
+                          
+                          let labelIconStack: UIStackView = {
+                                      let stackView          = UIStackView()
+                                      stackView.axis         = .horizontal
+                                      stackView.distribution = .equalSpacing
+                                      stackView.spacing      =  4
+                                      return stackView
+                                  }()
+                          labelIconStack.addArrangedSubview(unitAndCount)
+                          labelIconStack.addArrangedSubview(nameIngredient)
+                          ingredientsColumn.addArrangedSubview(labelIconStack)
+                      }
+          }
+}
+
 class SimilarListCell: UITableViewCell, ConfigurableCell {
     
     var recipesAll: [Recipe]?
@@ -390,3 +520,8 @@ class DetailStackView: UITableViewCell, ConfigurableCell {
 }
 
 
+extension Double {
+    func format(f: String) -> String {
+        return String(format: "%\(f)f", self)
+    }
+}
