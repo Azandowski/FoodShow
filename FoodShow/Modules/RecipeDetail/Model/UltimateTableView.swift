@@ -22,7 +22,15 @@ class TableViewModel {
     init(recipe:Recipe) {
         self.recipe = recipe
         items.append(DetailStackConfig.init(item: recipe))
-        items.append(ButtonCellConfig.init(item: "Add to Favorites"))
+        if recipe.isFav == false {
+            
+            items.append(ButtonCellConfig.init(item: "Add to Favorites"))
+            
+        }else {
+            
+            items.append(ButtonCellConfig.init(item: "Delete from Favorites"))
+            
+        }
         if recipe.analyzedInstructions!.count > 0{
             for step in recipe.analyzedInstructions![0].steps {
                        items.append(StepCellConfig.init(item: step))

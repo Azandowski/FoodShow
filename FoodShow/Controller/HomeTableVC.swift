@@ -14,6 +14,7 @@ class HomeTableVC: UITableViewController {
        let networkService = NetworkService()
        var collectionTitleString: String = ""
        var items: [Recipe] = []
+    var test: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +22,30 @@ class HomeTableVC: UITableViewController {
             self.items = result["recipes"]!
             self.tableView.reloadData()
          }
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.recipeNotification),
+            name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+            object: nil)
+    }
+    
+    @objc func recipeNotification(notification: Notification){
+        if let result = notification.object as? Int {
+            
+            if let i = items.firstIndex(where: { $0.id == result }) {
+                print("before remote recipe id: \(result), remote recipe status: \(items[i].isFav) ")
+                guard let userInfo = notification.userInfo else {return}
+                guard let isFav = userInfo["status"] as? Int else {return}
+                if isFav == 1
+                { items[i].isFav = true }
+                if isFav == 2
+                { items[i].isFav = false }
+                
+                print("after remote recipe id: \(result), remote recipe status: \(items[i].isFav) ")
+                
+                self.tableView.reloadData()
+            }
+        }
         
     }
 
@@ -39,6 +64,7 @@ class HomeTableVC: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = RecipeDetailViewController(recipe: items[indexPath.row])
         self.navigationController?.pushViewController(vc, animated: true)
+        print(test)
            
        }
 

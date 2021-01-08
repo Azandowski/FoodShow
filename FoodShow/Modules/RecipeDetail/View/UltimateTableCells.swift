@@ -197,6 +197,12 @@ class ButtonCell: UITableViewCell, ConfigurableCell {
     
     func configure(data item: String) {
         self.buttonUI.setTitle(item, for: .normal)
+        if item == "Delete from Favorites" {
+            self.buttonUI.backgroundColor = .green
+        }
+        if item == "Add to Favorites" {
+            self.buttonUI.backgroundColor = .purple
+        }
     }
 }
 

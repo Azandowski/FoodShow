@@ -19,7 +19,6 @@ class RecipeDetailViewController: UIViewController {
      init(recipe:Recipe){
         super.init(nibName: nil, bundle: nil)
         self.recipe = recipe
-        //print(self.recipe.isFav)
     }
     
     required init?(coder: NSCoder) {
@@ -89,39 +88,39 @@ class RecipeDetailViewController: UIViewController {
     @objc func buttonAction(sender: UIButton!) {
         
         let RL = RecipeLocalService()
-
+        var favStatus = ["status": 2]
+        
         if self.recipe.isFav == false {
             recipeId = self.recipe.id
-            if recipeId != 0 {
-            let favItems: [Recipe] = [self.recipe]
-            let newFavRecipe = RL.convertToRecipeLocalObject(with: favItems)
-            RL.saveRecipe(with: newFavRecipe)
-            recipe.isFav = true
-            sender.setTitle("Delete from Favorites", for: .normal)
-            sender.backgroundColor = UIColor.green
-            self.viewDidLoad()
-            }
-          
-            RL.getRecipeById(with: recipeId, completion: { result in
-                switch result {
-                case .failure(let error):
-                    print(error)
-                case .success(let recipe):
-                    print(recipe)
+                if recipeId != 0 {
+                        let favItems: [Recipe] = [self.recipe]
+                        let newFavRecipe = RL.convertToRecipeLocalObject(with: favItems)
+                        RL.saveRecipe(with: newFavRecipe)
+                        sender.setTitle("Delete from Favorites", for: .normal)
+                        sender.backgroundColor = UIColor.green
+                        self.recipe.isFav = true
+                        self.viewDidLoad()
+                        favStatus = ["status": 1]
                 }
-            })
-        }else{
-            let RL = RecipeLocalService()
-            if recipeId != 0 {
-                
-                RL.removeRecipes(with: recipeId)
-                recipe.isFav = false
-                sender.setTitle("Add to Favorites", for: .normal)
-                sender.backgroundColor = UIColor.purple
-                recipeId = 0
-                self.viewDidLoad()
-                
-            }
+        }
+        
+//        if self.recipe.isFav == true {
+        else{
+            recipeId = self.recipe.id
+                    if recipeId != 0 {
+                        RL.removeRecipes(with: recipeId)
+                        sender.setTitle("Add to Favorites", for: .normal)
+                        sender.backgroundColor = UIColor.purple
+                        self.recipe.isFav = false
+                        self.viewDidLoad()
+                        favStatus = ["status": 2]
+                    }
+        }
+        
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+                object: self.recipeId, userInfo: favStatus )
         }
     }
 }
