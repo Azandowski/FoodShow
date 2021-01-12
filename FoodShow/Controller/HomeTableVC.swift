@@ -14,7 +14,7 @@ class HomeTableVC: UITableViewController {
        let networkService = NetworkService()
        var collectionTitleString: String = ""
        var items: [Recipe] = []
-        var test: Int?
+       var test: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,9 +63,7 @@ class HomeTableVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = RecipeDetailViewController(recipe: items[indexPath.row])
-        self.navigationController?.pushViewController(vc, animated: true)
-        print(test)
-           
+        self.navigationController?.pushViewController(vc, animated: true)           
        }
 
 

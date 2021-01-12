@@ -8,28 +8,41 @@
 
 import UIKit
 
-class SavedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class SavedVC: UIViewController{
     
     var items: [RecipeLocalObject] = []
-    
-    private let collectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: UICollectionViewFlowLayout()
-    )
+    var recipes: [Recipe] = []
 
+    lazy var collectionView: UICollectionView = {
+              let layout = UICollectionViewFlowLayout()
+              layout.minimumInteritemSpacing = 24
+              layout.scrollDirection = .vertical
+              layout.itemSize = CGSize(width: 200, height: 220)
+              let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+              cv.backgroundColor = .black
+              cv.register(RecipeCell.self, forCellWithReuseIdentifier: "cellFav")
+           return cv
+          }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.register(RecipeFavoriteCollectionViewCell.self, forCellWithReuseIdentifier: RecipeFavoriteCollectionViewCell.identifier)
+        self.view.addSubview(collectionView)
+        getLocalFavs()
+        collectionView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
         collectionView.delegate = self
         collectionView.dataSource = self
-        view.addSubview(collectionView)
-        getLocalRecipes()
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.recipeNotification),
             name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
             object: nil)
-        
+    }
+    func getLocalFavs(){
+        let RL = RecipeLocalService()
+        self.recipes = RL.extractRecipes()
+        collectionView.reloadData()
     }
     func getLocalRecipes() {
         let RL = RecipeLocalService()
@@ -45,53 +58,29 @@ class SavedVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     @objc func recipeNotification(notification: Notification){
         print("savedVC")
         getLocalRecipes()
-        collectionView.reloadData()
+//        collectionView.reloadData()
         
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        collectionView.frame = view.bounds
+//        collectionView.frame = view.bounds
         
     }
-    
-    
+}
+extension SavedVC: UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
+           return recipes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipeFavoriteCollectionViewCell.identifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellFav", for: indexPath) as! RecipeCell
+        cell.backgroundColor = .black
+        (cell).configure(recept: recipes[indexPath.row])
         return cell
     }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(
-            width: (view.frame.size.width/2)-10,
-            height: (view.frame.size.width/2)-10
-            )
-    }
- 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
-    }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-//        let index = indexPath.row
-//      DispatchQueue.main.async {
-//            NotificationCenter.default.post(
-//                name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
-//                object: self.items[index])  
-//    }
-        print("Нажата колонка \(indexPath.section) и строка \(indexPath.row)")
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGSize {
+        return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/2)
     }
 }

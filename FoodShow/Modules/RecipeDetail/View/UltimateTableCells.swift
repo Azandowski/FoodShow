@@ -259,8 +259,8 @@ extension SimilarListCell: UICollectionViewDelegateFlowLayout, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RecipeCell
-        cell.recipe = recipesAll![indexPath.row]
-        cell.backgroundColor = .green
+        cell.configure(recept: recipesAll![indexPath.row])
+        cell.backgroundColor = .black
         return cell
     }
     
@@ -271,7 +271,7 @@ extension SimilarListCell: UICollectionViewDelegateFlowLayout, UICollectionViewD
 
 class RecipeCell: UICollectionViewCell{
     
-    var recipe: Recipe!
+    var recipe: Recipe?
     
     override init(frame: CGRect) {
         super.init(frame:frame)
@@ -287,12 +287,14 @@ class RecipeCell: UICollectionViewCell{
     image.clipsToBounds = true
     image.layer.cornerRadius = 12
     image.layer.masksToBounds = true
-    image.sd_setImage(with: URL(string: "https://spoonacular.com/recipeImages/659782-556x370.jpg"))
         return image
     }()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    func configure(recept: Recipe?){
+        pictureView.sd_setImage(with: URL(string: recept?.image ?? "https://spoonacular.com/recipeImages/716298-556x370.jpg"))
     }
 }
 
