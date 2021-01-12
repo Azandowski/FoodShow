@@ -143,35 +143,6 @@
             </objects>
             <point key="canvasLocation" x="2505.7971014492755" y="-547.43303571428567"/>
         </scene>
-        <!--Сохраненные рецепты-->
-        <scene sceneID="Gag-kI-L8N">
-            <objects>
-                <tableViewController id="nFA-Ot-SqC" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Xop-1Q-zhv">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.90980392160000001" green="0.48627450979999998" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="saved" id="Ze1-Ju-rfI">
-                                <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ze1-Ju-rfI" id="mv2-DT-PG3">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="nFA-Ot-SqC" id="Lrr-2X-E4C"/>
-                            <outlet property="delegate" destination="nFA-Ot-SqC" id="sry-rX-5ko"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Сохраненные рецепты" id="Qfb-IU-Roo"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PGZ-nA-xQi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1267" y="514"/>
-        </scene>
         <!--Калькулятор-->
         <scene sceneID="6Pj-t9-gae">
             <objects>
@@ -234,12 +205,28 @@
                         <color key="barTintColor" red="0.90980392160000001" green="0.48627450979999998" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="nFA-Ot-SqC" kind="relationship" relationship="rootViewController" id="fCs-Zb-GZ5"/>
+                        <segue destination="UEE-hm-eK7" kind="relationship" relationship="rootViewController" id="7IR-lc-Idv"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F9R-We-Wb1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="380" y="514"/>
+        </scene>
+        <!--SavedVC-->
+        <scene sceneID="cEH-pJ-qAj">
+            <objects>
+                <viewController id="UEE-hm-eK7" customClass="SavedVC" customModule="FoodShow" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="JkD-3p-7E7">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="glO-pj-2I8"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="61m-rE-7TX"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2mB-hv-nqP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1103" y="529"/>
         </scene>
         <!--Главная-->
         <scene sceneID="ZHu-Tq-eBr">

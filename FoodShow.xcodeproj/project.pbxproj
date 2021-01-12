@@ -14,6 +14,9 @@
 		73E77E0525966FB6008CB72B /* ReceptVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E77E0425966FB6008CB72B /* ReceptVC.swift */; };
 		73EEF487259A01A8007789C0 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EEF486259A01A8007789C0 /* Home.swift */; };
 		73EEF48F259A0282007789C0 /* HomeStaticTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EEF48E259A0282007789C0 /* HomeStaticTableVC.swift */; };
+		9AB5D41D25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB5D41C25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift */; };
+		9AB5D41E25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB5D41C25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift */; };
+		9AB5D41F25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB5D41C25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift */; };
 		9CC812A9987262862C5B7D8A /* Pods_FoodShowTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D27975E68AC8A1EFC7866E /* Pods_FoodShowTests.framework */; };
 		C80B7961259721C2007DC68E /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80B7960259721C2007DC68E /* Endpoint.swift */; };
 		C80B796425972258007DC68E /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80B796325972258007DC68E /* NetworkService.swift */; };
@@ -66,6 +69,7 @@
 		73E77E0425966FB6008CB72B /* ReceptVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceptVC.swift; sourceTree = "<group>"; };
 		73EEF486259A01A8007789C0 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		73EEF48E259A0282007789C0 /* HomeStaticTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeStaticTableVC.swift; sourceTree = "<group>"; };
+		9AB5D41C25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeFavoriteCollectionViewCell.swift; sourceTree = "<group>"; };
 		9EB11925815B814611323BFE /* Pods-FoodShowTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodShowTests.release.xcconfig"; path = "Target Support Files/Pods-FoodShowTests/Pods-FoodShowTests.release.xcconfig"; sourceTree = "<group>"; };
 		C80B7960259721C2007DC68E /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		C80B796325972258007DC68E /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -296,6 +300,7 @@
 			isa = PBXGroup;
 			children = (
 				C878F24525A07B4F00976C4A /* UltimateTableCells.swift */,
+				9AB5D41C25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -557,6 +562,7 @@
 				C89A27BB25A59A9D004770E4 /* RecipeLocalObject.swift in Sources */,
 				73E77E0525966FB6008CB72B /* ReceptVC.swift in Sources */,
 				C89A27B725A59A32004770E4 /* Constants.swift in Sources */,
+				9AB5D41D25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift in Sources */,
 				73E77E0025966F92008CB72B /* CalcVC.swift in Sources */,
 				C89A27B925A59A4D004770E4 /* RecipeLocalService.swift in Sources */,
 				73E77DF625966F6C008CB72B /* HomeTableVC.swift in Sources */,
@@ -573,6 +579,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AB5D41E25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift in Sources */,
 				C82BA34F2593A8EA0094EF2C /* FoodShowTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -581,6 +588,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AB5D41F25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift in Sources */,
 				C82BA35A2593A8EA0094EF2C /* FoodShowUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

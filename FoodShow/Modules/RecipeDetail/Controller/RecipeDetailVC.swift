@@ -104,7 +104,6 @@ class RecipeDetailViewController: UIViewController {
                 }
         }
         
-//        if self.recipe.isFav == true {
         else{
             recipeId = self.recipe.id
                     if recipeId != 0 {

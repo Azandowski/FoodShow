@@ -14,7 +14,7 @@ class HomeTableVC: UITableViewController {
        let networkService = NetworkService()
        var collectionTitleString: String = ""
        var items: [Recipe] = []
-    var test: Int?
+        var test: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
