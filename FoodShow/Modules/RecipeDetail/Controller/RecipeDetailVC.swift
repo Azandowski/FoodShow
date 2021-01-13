@@ -87,14 +87,6 @@ class RecipeDetailViewController: UIViewController {
     }
     
     @objc func buttonAction(sender: UIButton!) {
-<<<<<<< HEAD
-//       if let likeButton =  viewModel.items.first(where: { $0 is ButtonCellConfig }){
-//            (likeButton as! ButtonCellConfig).item = "sms"
-//        }
-        sender.setTitle("Damn", for: .normal)
-        self.viewDidLoad()
-        print(recipe.id)
-=======
         
         let RL = RecipeLocalService()
         var favStatus = ["status": 2]
@@ -130,7 +122,6 @@ class RecipeDetailViewController: UIViewController {
                 name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
                 object: self.recipeId, userInfo: favStatus )
         }
->>>>>>> like
     }
 }
 
