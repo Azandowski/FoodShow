@@ -9,5 +9,7 @@ import Foundation
 
 class Constants {
     static let RECIPE_NOTIFICATION = "recipe_notification"
+    static let FAVORITE_NOTIFICATION = "favorite_notification"
+
     
 }

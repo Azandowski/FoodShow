@@ -14,6 +14,7 @@ import SDWebImageSVGCoder
 class RecipeDetailViewController: UIViewController {
   
     var recipe: Recipe!
+    var recipeId: Int = 0
 
      init(recipe:Recipe){
         super.init(nibName: nil, bundle: nil)
@@ -26,7 +27,7 @@ class RecipeDetailViewController: UIViewController {
     
    
     lazy var viewModel:TableViewModel={
-        var viewModel = TableViewModel(recipe: self.recipe)
+        var viewModel = TableViewModel(recipe: self.recipe,titleLike: "Add To Fav")
         return viewModel
     }()
     
@@ -46,6 +47,7 @@ class RecipeDetailViewController: UIViewController {
         tableView.register(DetailStackView.self, forCellReuseIdentifier:String(describing: DetailStackView.self))
         tableView.register(SimilarListCell.self, forCellReuseIdentifier:String(describing: SimilarListCell.self))
         tableView.register(ButtonCell.self, forCellReuseIdentifier:String(describing: ButtonCell.self))
+        tableView.register(IngredientsStackView.self, forCellReuseIdentifier:String(describing: IngredientsStackView.self))
         tableView.backgroundView?.backgroundColor = .black
         tableView.backgroundColor = .black
         return tableView
@@ -85,9 +87,53 @@ class RecipeDetailViewController: UIViewController {
     }
     
     @objc func buttonAction(sender: UIButton!) {
-      print("LIKE tapped")
+<<<<<<< HEAD
+//       if let likeButton =  viewModel.items.first(where: { $0 is ButtonCellConfig }){
+//            (likeButton as! ButtonCellConfig).item = "sms"
+//        }
+        sender.setTitle("Damn", for: .normal)
+        self.viewDidLoad()
+        print(recipe.id)
+=======
+        
+        let RL = RecipeLocalService()
+        var favStatus = ["status": 2]
+        
+        if self.recipe.isFav == false {
+            recipeId = self.recipe.id
+                if recipeId != 0 {
+                        let favItems: [Recipe] = [self.recipe]
+                        let newFavRecipe = RL.convertToRecipeLocalObject(with: favItems)
+                        RL.saveRecipe(with: newFavRecipe)
+                        sender.setTitle("Delete from Favorites", for: .normal)
+                        sender.backgroundColor = UIColor.green
+                        self.recipe.isFav = true
+                        self.viewDidLoad()
+                        favStatus = ["status": 1]
+                }
+        }
+        
+        else{
+            recipeId = self.recipe.id
+                    if recipeId != 0 {
+                        RL.removeRecipes(with: recipeId)
+                        sender.setTitle("Add to Favorites", for: .normal)
+                        sender.backgroundColor = UIColor.purple
+                        self.recipe.isFav = false
+                        self.viewDidLoad()
+                        favStatus = ["status": 2]
+                    }
+        }
+        
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+                object: self.recipeId, userInfo: favStatus )
+        }
+>>>>>>> like
     }
 }
+
 
     extension RecipeDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
@@ -118,7 +164,7 @@ class RecipeDetailViewController: UIViewController {
         
          let headerStep: UILabel = {
                        let stepText = UILabel()
-                       stepText.font = .systemFont(ofSize: 22, weight: .bold)
+                       stepText.font = .systemFont(ofSize: 24, weight: .bold)
                        stepText.numberOfLines = 1
                        stepText.textColor = .white
                        stepText.textAlignment = .left
@@ -127,12 +173,17 @@ class RecipeDetailViewController: UIViewController {
         
                if viewModel.items[section] is StepCellConfig {
                 
-                headerStep.text =  "Step: \(section-2 + 1)/\(recipe.analyzedInstructions![0].steps.count)"
+                headerStep.text =  "Step: \(section-3 + 1)/\(recipe.analyzedInstructions![0].steps.count)"
                 return headerStep
                 
                }else if viewModel.items[section] is SimilarListConfig {
                 
                 headerStep.text =  "Similar Recipies"
+                return headerStep
+                
+               } else if viewModel.items[section] is IngredientsCellConfig {
+                
+                headerStep.text =  "Ingredients"
                 return headerStep
                 
                }else{

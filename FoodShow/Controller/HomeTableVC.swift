@@ -14,6 +14,7 @@ class HomeTableVC: UITableViewController {
        let networkService = NetworkService()
        var collectionTitleString: String = ""
        var items: [Recipe] = []
+       var test: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,32 +22,31 @@ class HomeTableVC: UITableViewController {
             self.items = result["recipes"]!
             self.tableView.reloadData()
          }
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.recipeNotification),
+            name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+            object: nil)
+    }
+    
+    @objc func recipeNotification(notification: Notification){
+        if let result = notification.object as? Int {
+            
+            if let i = items.firstIndex(where: { $0.id == result }) {
+                print("before remote recipe id: \(result), remote recipe status: \(items[i].isFav) ")
+                guard let userInfo = notification.userInfo else {return}
+                guard let isFav = userInfo["status"] as? Int else {return}
+                if isFav == 1
+                { items[i].isFav = true }
+                if isFav == 2
+                { items[i].isFav = false }
+                
+                print("after remote recipe id: \(result), remote recipe status: \(items[i].isFav) ")
+                
+                self.tableView.reloadData()
+            }
+        }
         
-          
-//            let RL = RecipeLocalService()
-            
-         // удаление по id рецепта
-        //    RL.removeRecipes(with: 715477)
-            
-        // получение рецептов из базы локальной
-            
-//            RL.getAllRecipe(completion: { result in
-//                switch result {
-//                case .failure(let error):
-//                    print(error)
-//                case .success(let recipe):
-//                    print(recipe)
-//                }
-//                //проверял сколько объектов в базе, можно будет удалить после проверки
-//                print(try! result.get().count)
-//
-//            })
-            // конвертирование структуры в объект реалма
-            //let newReandomRecipe = RL.convertToRecipeLocalObject(with: self.items)
-            
-            //сохранение массива объектов локально в реалм
-            //RL.saveRecipe(with: newReandomRecipe)
-            //print(newReandomRecipe)
     }
 
     // MARK: - Table view data source
@@ -63,8 +63,7 @@ class HomeTableVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = RecipeDetailViewController(recipe: items[indexPath.row])
-        self.navigationController?.pushViewController(vc, animated: true)
-           
+        self.navigationController?.pushViewController(vc, animated: true)           
        }
 
 
