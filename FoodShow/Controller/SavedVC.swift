@@ -8,83 +8,79 @@
 
 import UIKit
 
-class SavedVC: UITableViewController {
+class SavedVC: UIViewController{
+    
+    var items: [RecipeLocalObject] = []
+    var recipes: [Recipe] = []
 
+    lazy var collectionView: UICollectionView = {
+              let layout = UICollectionViewFlowLayout()
+              layout.minimumInteritemSpacing = 24
+              layout.scrollDirection = .vertical
+              layout.itemSize = CGSize(width: 200, height: 220)
+              let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+              cv.backgroundColor = .black
+              cv.register(RecipeCell.self, forCellWithReuseIdentifier: "cellFav")
+           return cv
+          }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.view.addSubview(collectionView)
+        getLocalFavs()
+        collectionView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.recipeNotification),
+            name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+            object: nil)
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    func getLocalFavs(){
+        let RL = RecipeLocalService()
+        self.recipes = RL.extractRecipes()
+        collectionView.reloadData()
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+    func getLocalRecipes() {
+        let RL = RecipeLocalService()
+        RL.getAllRecipe(completion: { result in
+                        switch result {
+                        case .failure(let error):
+                            print(error)
+                        case .success(let recipe):
+                            self.items = recipe
+                        }})
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+    
+    @objc func recipeNotification(notification: Notification){
+        print("savedVC")
+        getLocalRecipes()
+//        collectionView.reloadData()
+        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+//        collectionView.frame = view.bounds
+        
+    }
+}
+extension SavedVC: UICollectionViewDelegate, UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+           return recipes.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellFav", for: indexPath) as! RecipeCell
+        cell.backgroundColor = .black
+        (cell).configure(recipe: recipes[indexPath.row])
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGSize {
+        return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/2)
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

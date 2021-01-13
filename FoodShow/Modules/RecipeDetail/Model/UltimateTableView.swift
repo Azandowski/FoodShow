@@ -24,8 +24,20 @@ class TableViewModel {
     init(recipe:Recipe,titleLike: String) {
         self.recipe = recipe
         items.append(DetailStackConfig.init(item: recipe))
+<<<<<<< HEAD
         items.append(ButtonCellConfig.init(item: titleLike))
         items.append(IngredientsCellConfig.init(item: recipe))
+=======
+        if recipe.isFav == false {
+            
+            items.append(ButtonCellConfig.init(item: "Add to Favorites"))
+            
+        }else {
+            
+            items.append(ButtonCellConfig.init(item: "Delete from Favorites"))
+            
+        }
+>>>>>>> like
         if recipe.analyzedInstructions!.count > 0{
             for step in recipe.analyzedInstructions![0].steps {
                        items.append(StepCellConfig.init(item: step))
@@ -36,8 +48,12 @@ class TableViewModel {
     
     var items: [CellConfigurator] = []
     
+<<<<<<< HEAD
     func changeLabel(val:String){
         titleLike = val
     }
+=======
+    
+>>>>>>> like
 }
 

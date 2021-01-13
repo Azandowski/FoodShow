@@ -190,6 +190,12 @@ class ButtonCell: UITableViewCell, ConfigurableCell {
     
     func configure(data item: String) {
         self.buttonUI.setTitle(item, for: .normal)
+        if item == "Delete from Favorites" {
+            self.buttonUI.backgroundColor = .green
+        }
+        if item == "Add to Favorites" {
+            self.buttonUI.backgroundColor = .purple
+        }
     }
 }
 
@@ -397,7 +403,6 @@ extension SimilarListCell: UICollectionViewDelegateFlowLayout, UICollectionViewD
 
 class RecipeCell: UICollectionViewCell{
     
-    
     override init(frame: CGRect) {
         super.init(frame:frame)
         contentView.addSubview(pictureView)
@@ -462,17 +467,16 @@ class RecipeCell: UICollectionViewCell{
     image.clipsToBounds = true
     image.layer.cornerRadius = 12
     image.layer.masksToBounds = true
-    image.sd_setImage(with: URL(string: "https://spoonacular.com/recipeImages/716298-556x370.jpg"))
-        return image
+    return image
     }()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     func configure(recipe: Recipe!){
         minute.text = "\(recipe.readyInMinutes) min"
         titleLbl.text = "Servings: \(recipe.servings)"
+    pictureView.sd_setImage(with: URL(string: recipe!.image ?? "https://spoonacular.com/recipeImages/716298-556x370.jpg"))
     }
 }
 

@@ -14,6 +14,7 @@ import SDWebImageSVGCoder
 class RecipeDetailViewController: UIViewController {
   
     var recipe: Recipe!
+    var recipeId: Int = 0
 
      init(recipe:Recipe){
         super.init(nibName: nil, bundle: nil)
@@ -86,12 +87,50 @@ class RecipeDetailViewController: UIViewController {
     }
     
     @objc func buttonAction(sender: UIButton!) {
+<<<<<<< HEAD
 //       if let likeButton =  viewModel.items.first(where: { $0 is ButtonCellConfig }){
 //            (likeButton as! ButtonCellConfig).item = "sms"
 //        }
         sender.setTitle("Damn", for: .normal)
         self.viewDidLoad()
         print(recipe.id)
+=======
+        
+        let RL = RecipeLocalService()
+        var favStatus = ["status": 2]
+        
+        if self.recipe.isFav == false {
+            recipeId = self.recipe.id
+                if recipeId != 0 {
+                        let favItems: [Recipe] = [self.recipe]
+                        let newFavRecipe = RL.convertToRecipeLocalObject(with: favItems)
+                        RL.saveRecipe(with: newFavRecipe)
+                        sender.setTitle("Delete from Favorites", for: .normal)
+                        sender.backgroundColor = UIColor.green
+                        self.recipe.isFav = true
+                        self.viewDidLoad()
+                        favStatus = ["status": 1]
+                }
+        }
+        
+        else{
+            recipeId = self.recipe.id
+                    if recipeId != 0 {
+                        RL.removeRecipes(with: recipeId)
+                        sender.setTitle("Add to Favorites", for: .normal)
+                        sender.backgroundColor = UIColor.purple
+                        self.recipe.isFav = false
+                        self.viewDidLoad()
+                        favStatus = ["status": 2]
+                    }
+        }
+        
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(
+                name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+                object: self.recipeId, userInfo: favStatus )
+        }
+>>>>>>> like
     }
 }
 

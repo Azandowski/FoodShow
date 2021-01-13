@@ -14,27 +14,28 @@ struct Recipes: Codable {
 }
 
 struct Recipe: Codable {
-    let vegetarian, vegan, glutenFree, dairyFree: Bool?
-    let veryHealthy, cheap, veryPopular, sustainable: Bool?
-    let weightWatcherSmartPoints: Int?
+    let vegetarian, vegan, glutenFree: Bool?
+    let veryHealthy, cheap: Bool?
+//    let weightWatcherSmartPoints: Int?
     let gaps: String?
-    let lowFodmap: Bool?
+//    let lowFodmap: Bool?
     let aggregateLikes, spoonacularScore, healthScore: Int?
-    let creditsText, license, sourceName: String?
-    let pricePerServing: Double?
+    let sourceName: String?
+    var pricePerServing: Double?
     let extendedIngredients: [ExtendedIngredient]?
     let id: Int
     let title: String
     let readyInMinutes, servings: Int
-    let sourceURL: String?
+//    let sourceURL: String?
     let image: String?
-    let imageType, summary: String?
+    let summary: String?
     let cuisines, dishTypes, diets, occasions: [String]?
     let instructions: String?
     let analyzedInstructions: [AnalyzedInstruction]?
     let originalID: JSONNull?
     let spoonacularSourceURL: String?
     let preparationMinutes, cookingMinutes: Int?
+    var isFav: Bool  =  false
 
     func fetchUmage () -> UIImage? {
         let image = UIImageView()
@@ -43,9 +44,9 @@ struct Recipe: Codable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case vegetarian, vegan, glutenFree, dairyFree, veryHealthy, cheap, veryPopular, sustainable, weightWatcherSmartPoints, gaps, lowFodmap, aggregateLikes, spoonacularScore, healthScore, creditsText, license, sourceName, pricePerServing, extendedIngredients, id, title, readyInMinutes, servings
-        case sourceURL = "sourceUrl"
-        case image, imageType, summary, cuisines, dishTypes, diets, occasions, instructions, analyzedInstructions
+        case vegetarian, vegan, glutenFree, veryHealthy, cheap, gaps, aggregateLikes, spoonacularScore, healthScore, sourceName, pricePerServing, extendedIngredients, id, title, readyInMinutes, servings
+//        case sourceURL = "sourceUrl"
+        case image, summary, cuisines, dishTypes, diets, occasions, instructions, analyzedInstructions
         case originalID = "originalId"
         case spoonacularSourceURL = "spoonacularSourceUrl"
         case preparationMinutes, cookingMinutes
@@ -123,4 +124,74 @@ class JSONNull: Codable, Hashable {
         var container = encoder.singleValueContainer()
         try container.encodeNil()
     }
+    
+   
+}
+
+extension Recipe {
+    
+    public init(managedObject: RecipeLocalObject) {
+               id = managedObject.id
+               title = managedObject.title
+               readyInMinutes = managedObject.readyInMinutes
+               extendedIngredients = managedObject.extendedIngredients
+               spoonacularScore = managedObject.spoonacularScore
+               image = managedObject.image
+               analyzedInstructions = managedObject.analyzedInstructions
+               servings = managedObject.servings
+        aggregateLikes = managedObject.aggregateLikes
+        vegan = managedObject.vegan
+        vegetarian = managedObject.vegetarian
+        cheap = managedObject.cheap
+        gaps = managedObject.gaps
+        sourceName = managedObject.sourceName
+        healthScore = managedObject.healthScore
+        cuisines = managedObject.cuisines
+        summary = managedObject.summary
+        originalID = managedObject.originalID
+        preparationMinutes = managedObject.preparationMinutes
+        glutenFree = managedObject.glutenFree
+        cookingMinutes = managedObject.cookingMinutes
+        pricePerServing = managedObject.pricePerServing
+        spoonacularSourceURL = managedObject.spoonacularSourceURL
+        instructions = managedObject.instructions
+        veryHealthy = managedObject.veryHealthy
+        diets = managedObject.diets
+        occasions = managedObject.occasions
+        dishTypes = managedObject.dishTypes
+    }
+    
+    public  func managedObject() -> RecipeLocalObject {
+        let recipeSaved = RecipeLocalObject()
+        recipeSaved.id = self.id
+        recipeSaved.title = self.title
+        recipeSaved.readyInMinutes = self.readyInMinutes
+        recipeSaved.extendedIngredients = self.extendedIngredients!
+        recipeSaved.spoonacularScore = self.spoonacularScore ?? 20
+        recipeSaved.image = self.image ?? ""
+        recipeSaved.analyzedInstructions = self.analyzedInstructions ?? []
+        recipeSaved.servings = self.servings
+        recipeSaved.aggregateLikes = self.aggregateLikes ?? 10
+        recipeSaved.vegan = self.vegan ?? false
+        recipeSaved.vegetarian = self.vegetarian ?? false
+        recipeSaved.cheap = self.cheap ?? true
+        recipeSaved.gaps = self.gaps ?? ""
+        recipeSaved.sourceName = self.sourceName ?? ""
+        recipeSaved.healthScore = self.healthScore ?? 0
+        recipeSaved.cuisines = self.cuisines ?? []
+        recipeSaved.summary = self.summary ?? ""
+        recipeSaved.originalID = self.originalID
+        recipeSaved.preparationMinutes = self.preparationMinutes ?? 0
+        recipeSaved.glutenFree = self.glutenFree ?? false
+        recipeSaved.cookingMinutes = self.cookingMinutes ?? 0
+        recipeSaved.pricePerServing = self.pricePerServing
+        recipeSaved.spoonacularSourceURL = self.spoonacularSourceURL
+        recipeSaved.instructions = self.instructions
+        recipeSaved.veryHealthy = self.veryHealthy
+        recipeSaved.diets = self.diets
+        recipeSaved.dishTypes = self.dishTypes
+        recipeSaved.occasions = self.occasions
+        return recipeSaved
+    }
+    
 }
