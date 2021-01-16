@@ -338,7 +338,7 @@ class SimilarListCell: UITableViewCell, ConfigurableCell {
         contentView.addSubview(similarCollectionView)
         similarCollectionView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
-            make.height.equalTo(250)
+            make.height.equalTo(310)
             make.width.equalToSuperview()
         }
 
@@ -355,7 +355,7 @@ class SimilarListCell: UITableViewCell, ConfigurableCell {
               layout.minimumInteritemSpacing = 24
               layout.minimumLineSpacing = 24
               layout.scrollDirection = .horizontal
-              layout.itemSize = CGSize(width: 200, height: 220)
+              layout.itemSize = CGSize(width: 200, height: 270)
               let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
               cv.backgroundColor = .black
               cv.register(RecipeCell.self, forCellWithReuseIdentifier: "cell")
@@ -366,7 +366,6 @@ class SimilarListCell: UITableViewCell, ConfigurableCell {
         if(self.recipesAll == nil){
             NetworkService.request(router: Router.getSimilar, id: id) { (result: [String? : [Recipe]]) in
                 self.recipesAll = result["recipies"]!
-                print(self.recipesAll?.count)
                 self.similarCollectionView.reloadData()
             }
         }
@@ -400,87 +399,6 @@ extension SimilarListCell: UICollectionViewDelegateFlowLayout, UICollectionViewD
         return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/2)
     }
 }
-
-class RecipeCell: UICollectionViewCell{
-    
-    override init(frame: CGRect) {
-        super.init(frame:frame)
-        contentView.addSubview(pictureView)
-        contentView.addSubview(titleLbl)
-        contentView.addSubview(minute)
-
-        titleLbl.snp.makeConstraints { (make) in
-            make.bottom.equalToSuperview().inset(8)
-            make.left.equalToSuperview().offset(8)
-        }
-        minute.snp.makeConstraints { (make) in
-            make.bottom.equalToSuperview().inset(8)
-            make.right.equalToSuperview().inset(8)
-        }
-        pictureView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
-        }
-//        gradientMaskLayer.frame = contentView.bounds
-//        contentView.layer.mask = gradientMaskLayer
-    }
-    
-    var recipeView: UIView = {
-       let view = UIView()
-        view.snp.makeConstraints({ (ConstraintMaker) in
-            ConstraintMaker.height.width.equalTo(40)
-        })
-       view.backgroundColor = .black
-       return view
-    }()
-    
-    
-    let gradientMaskLayer: CAGradientLayer = {
-        let grad = CAGradientLayer()
-        grad.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0.1),UIColor.clear.cgColor]
-        return grad
-    }()
-    
-    lazy var titleLbl: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .regular)
-        label.numberOfLines = 0
-        label.textColor = .white
-        label.textAlignment = .center
-        label.text = "Damn you"
-        return label
-    }()
-    
-    lazy var minute: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .regular)
-        label.numberOfLines = 0
-        label.textColor = .white
-        label.textAlignment = .center
-        return label
-    }()
-    
-    
-   fileprivate var pictureView: UIImageView = {
-    let image = UIImageView()
-    image.contentMode = .scaleAspectFill
-    image.alpha = 0.9
-    image.clipsToBounds = true
-    image.layer.cornerRadius = 12
-    image.layer.masksToBounds = true
-    return image
-    }()
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    func configure(recipe: Recipe!){
-        minute.text = "\(recipe.readyInMinutes) min"
-        titleLbl.text = "Servings: \(recipe.servings)"
-    pictureView.sd_setImage(with: URL(string: recipe!.image ?? "https://spoonacular.com/recipeImages/716298-556x370.jpg"))
-    }
-}
-
-
 
 class DetailStackView: UITableViewCell, ConfigurableCell {
     
@@ -584,4 +502,26 @@ extension Double {
     func format(f: String) -> String {
         return String(format: "%\(f)f", self)
     }
+}
+
+func hexStringToUIColor (hex:String) -> UIColor {
+    var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+    if (cString.hasPrefix("#")) {
+        cString.remove(at: cString.startIndex)
+    }
+
+    if ((cString.count) != 6) {
+        return UIColor.gray
+    }
+
+    var rgbValue:UInt64 = 0
+    Scanner(string: cString).scanHexInt64(&rgbValue)
+
+    return UIColor(
+        red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+        green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+        blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+        alpha: CGFloat(1.0)
+    )
 }
