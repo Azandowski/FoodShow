@@ -79,7 +79,7 @@ final class RecipeLocalService: RecipeService {
     
     func saveRecipe(with recipesList: [RecipeLocalObject]) {
         do {
-            let realm = try! Realm()
+            let realm = try Realm()
             try realm.write {
                 realm.add(recipesList)
             }
@@ -125,60 +125,14 @@ final class RecipeLocalService: RecipeService {
     }
     
     public func extractRecipes () -> [Recipe] {
+
         let realm = try! Realm()
         let models = realm.objects(RecipeLocalObject.self)
         return Array(models).map {
-            print($0.id)
             return Recipe(managedObject: $0)
         }
-    }
     
-//    func convertToRecipeStruct(with recipes: [RecipeLocalObject]) -> [Recipe] {
-//
-//        var result = [Recipe]()
-//        for recipe in recipes {
-//            var recipeL = Recipe()
-//            recipeL.aggregateLikes = recipe.aggregateLikes!
-//            recipeL.cheap = recipe.cheap!
-//            recipeL.cookingMinutes = recipe.cookingMinutes ?? 0
-//            recipeL.creditsText = recipe.creditsText ?? ""
-//            recipeL.cuisines = recipe.cuisines!
-//            recipeL.dairyFree = recipe.dairyFree!
-//            recipeL.diets = recipe.diets!
-//            recipeL.dishTypes = recipe.dishTypes!
-//            recipeL.gaps  = recipe.gaps!
-//            recipeL.glutenFree = recipe.glutenFree!
-//            recipeL.healthScore  = recipe.healthScore!
-//            recipeL.id = recipe.id
-//            recipeL.image  = recipe.image!
-//            recipeL.imageType =  recipe.imageType!
-//            recipeL.instructions = recipe.instructions!
-//            recipeL.license = recipe.license!
-//            recipeL.lowFodmap = recipe.lowFodmap!
-//            recipeL.occasions = recipe.occasions!
-//            recipeL.preparationMinutes = recipe.preparationMinutes ?? 0
-//            recipeL.pricePerServing = recipe.pricePerServing!
-//            recipeL.readyInMinutes = recipe.readyInMinutes
-//            recipeL.servings = recipe.servings
-//            recipeL.sourceName = recipe.sourceName!
-//            recipeL.sourceURL = recipe.sourceURL!
-//            recipeL.spoonacularScore = recipe.spoonacularScore!
-//            recipeL.spoonacularSourceURL = recipe.spoonacularSourceURL!
-//            recipeL.summary = recipe.summary!
-//            recipeL.sustainable = recipe.sustainable!
-//            recipeL.title = recipe.title
-//            recipeL.vegan = recipe.vegan!
-//            recipeL.vegetarian = recipe.vegetarian!
-//            recipeL.veryHealthy = recipe.veryHealthy!
-//            recipeL.veryPopular = recipe.veryPopular!
-//            recipeL.weightWatcherSmartPoints = recipe.weightWatcherSmartPoints!
-//            recipeL.extendedIngredients = recipe.extendedIngredients ?? []
-//            recipeL.analyzedInstructions = recipe.analyzedInstructions ?? []
-//            recipeL.originalID = recipe.originalID
-//
-//            result.append(recipeL)
-//        }
-//        return result
-//    }
+    }
+
     
 }

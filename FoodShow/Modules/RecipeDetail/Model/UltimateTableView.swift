@@ -1,10 +1,3 @@
-//
-//  UltimateTableView.swift
-//  FoodShow
-//
-//  Created by AzaDev on 1/2/21.
-//  Copyright © 2021 TeamOfFour. All rights reserved.
-//
 
 import UIKit
 
@@ -19,30 +12,19 @@ typealias IngredientsCellConfig = TableCellConfigurator<IngredientsStackView, Re
 
 class TableViewModel {
     var recipe: Recipe!
-    var titleLike: String!
     
-    init(recipe:Recipe,titleLike: String) {
-        self.recipe = recipe
+    func updateItems(recipe: Recipe!) -> [CellConfigurator]{
+        var items: [CellConfigurator] = []
         items.append(DetailStackConfig.init(item: recipe))
         items.append(IngredientsCellConfig.init(item: recipe))
-        if recipe.isFav == false {
-            
-            items.append(ButtonCellConfig.init(item: "Add to Favorites"))
-            
-        }else {
-            
-            items.append(ButtonCellConfig.init(item: "Delete from Favorites"))
-            
-        }
+        items.append(ButtonCellConfig.init(item: recipe.isFav ? "Delete from Favorites"  :  "Add to Favorites"))
         if recipe.analyzedInstructions!.count > 0{
             for step in recipe.analyzedInstructions![0].steps {
                        items.append(StepCellConfig.init(item: step))
                    }
         }
         items.append(SimilarListConfig.init(item: recipe.id))
+        
+        return items
     }
-    
-    var items: [CellConfigurator] = []
-    
 }
-

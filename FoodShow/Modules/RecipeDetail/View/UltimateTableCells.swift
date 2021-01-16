@@ -408,7 +408,15 @@ class RecipeCell: UICollectionViewCell{
         contentView.addSubview(pictureView)
         contentView.addSubview(titleLbl)
         contentView.addSubview(minute)
+        contentView.addSubview(likeButton)
 
+        likeButton.snp.makeConstraints{(make) in
+                                       
+        //make.bottom.equalToSuperview().inset(5)
+            make.center.equalToSuperview()
+          //  make.top.equalToSuperview().inset(50)
+        }
+        
         titleLbl.snp.makeConstraints { (make) in
             make.bottom.equalToSuperview().inset(8)
             make.left.equalToSuperview().offset(8)
@@ -442,7 +450,7 @@ class RecipeCell: UICollectionViewCell{
     
     lazy var titleLbl: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.font = .systemFont(ofSize: 14, weight: .regular)
         label.numberOfLines = 0
         label.textColor = .white
         label.textAlignment = .center
@@ -452,11 +460,16 @@ class RecipeCell: UICollectionViewCell{
     
     lazy var minute: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.font = .systemFont(ofSize: 14, weight: .regular)
         label.numberOfLines = 0
         label.textColor = .white
         label.textAlignment = .center
         return label
+    }()
+    
+    lazy var likeButton: UIButton = {
+        let button = UIButton()
+        return button
     }()
     
     
@@ -470,13 +483,18 @@ class RecipeCell: UICollectionViewCell{
     return image
     }()
     
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     func configure(recipe: Recipe!){
         minute.text = "\(recipe.readyInMinutes) min"
         titleLbl.text = "Servings: \(recipe.servings)"
-    pictureView.sd_setImage(with: URL(string: recipe!.image ?? "https://spoonacular.com/recipeImages/716298-556x370.jpg"))
+        pictureView.sd_setImage(with: URL(string: recipe!.image ?? "https://spoonacular.com/recipeImages/716298-556x370.jpg"))
+        if let image = UIImage(named: "favorite"){
+            likeButton.setImage(image, for: .normal)
+        }
+      
     }
 }
 
