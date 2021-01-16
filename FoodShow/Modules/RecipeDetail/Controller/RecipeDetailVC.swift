@@ -27,7 +27,7 @@ class RecipeDetailViewController: UIViewController {
     
    
     lazy var viewModel:TableViewModel={
-        var viewModel = TableViewModel(recipe: self.recipe,titleLike: "Add To Fav")
+        var viewModel = TableViewModel()
         return viewModel
     }()
     
@@ -68,6 +68,12 @@ class RecipeDetailViewController: UIViewController {
         self.view.backgroundColor = .black
         tableView.snp.makeConstraints { (make) in make.edges.equalToSuperview() }
         animatedHeader.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: self.view.frame.height * 0.4)
+        
+        NotificationCenter.default.addObserver(
+                   self,
+                   selector: #selector(self.recipeNotification),
+                   name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+                   object: nil)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -86,50 +92,46 @@ class RecipeDetailViewController: UIViewController {
         }
     }
     
+    @objc func recipeNotification(notification: Notification){
+           if let result = notification.object as? Recipe {
+               print(result.isFav)
+               recipe.isFav = result.isFav
+               viewModel.updateItems(recipe: result)
+               tableView.reloadData()
+           }
+           
+       }
+    
     @objc func buttonAction(sender: UIButton!) {
-        
-        let RL = RecipeLocalService()
-        var favStatus = ["status": 2]
-        
-        if self.recipe.isFav == false {
-            recipeId = self.recipe.id
-                if recipeId != 0 {
-                        let favItems: [Recipe] = [self.recipe]
-                        let newFavRecipe = RL.convertToRecipeLocalObject(with: favItems)
-                        RL.saveRecipe(with: newFavRecipe)
-                        sender.setTitle("Delete from Favorites", for: .normal)
-                        sender.backgroundColor = UIColor.green
-                        self.recipe.isFav = true
-                        self.viewDidLoad()
-                        favStatus = ["status": 1]
-                }
-        }
-        
-        else{
-            recipeId = self.recipe.id
-                    if recipeId != 0 {
-                        RL.removeRecipes(with: recipeId)
-                        sender.setTitle("Add to Favorites", for: .normal)
-                        sender.backgroundColor = UIColor.purple
-                        self.recipe.isFav = false
-                        self.viewDidLoad()
-                        favStatus = ["status": 2]
-                    }
-        }
-        
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(
-                name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
-                object: self.recipeId, userInfo: favStatus )
+            
+            let RL = RecipeLocalService()
+            if self.recipe.isFav == false {
+                    let favItems: [Recipe] = [self.recipe]
+                    let newFavRecipe = RL.convertToRecipeLocalObject(with: favItems)
+                    RL.saveRecipe(with: newFavRecipe)
+                    self.recipe.isFav = true
+                    viewModel.updateItems(recipe: self.recipe)
+                    tableView.reloadData()
+            } else{
+                RL.removeRecipes(with: recipe.id)
+                    self.recipe.isFav = false
+                    viewModel.updateItems(recipe: self.recipe)
+                    tableView.reloadData()
+
+                  }
+            
+                NotificationCenter.default.post(
+                    name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+                    object: self.recipe )
         }
     }
-}
+
 
 
     extension RecipeDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.items.count
+        return viewModel.updateItems(recipe: recipe).count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -137,7 +139,7 @@ class RecipeDetailViewController: UIViewController {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = viewModel.items[indexPath.section]
+        let item = viewModel.updateItems(recipe: recipe)[indexPath.section]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: type(of: item).reuseId)!
         
@@ -145,7 +147,7 @@ class RecipeDetailViewController: UIViewController {
       
         item.configure(cell: cell)
         
-        if  viewModel.items[indexPath.section] is ButtonCellConfig{
+        if  viewModel.updateItems(recipe: recipe)[indexPath.section] is ButtonCellConfig{
             (cell as! ButtonCell).buttonUI.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         }
         return cell
@@ -162,17 +164,17 @@ class RecipeDetailViewController: UIViewController {
                       return stepText
                    }()
         
-               if viewModel.items[section] is StepCellConfig {
+            if viewModel.updateItems(recipe: recipe)[section] is StepCellConfig {
                 
                 headerStep.text =  "Step: \(section-3 + 1)/\(recipe.analyzedInstructions![0].steps.count)"
                 return headerStep
                 
-               }else if viewModel.items[section] is SimilarListConfig {
+               }else if viewModel.updateItems(recipe: recipe)[section] is SimilarListConfig {
                 
                 headerStep.text =  "Similar Recipies"
                 return headerStep
                 
-               } else if viewModel.items[section] is IngredientsCellConfig {
+               } else if viewModel.updateItems(recipe: recipe)[section] is IngredientsCellConfig {
                 
                 headerStep.text =  "Ingredients"
                 return headerStep
