@@ -17,8 +17,6 @@ class SavedVC: UIViewController, LikeDelegate{
         }
         recipe?.isFav = false
         RL.removeRecipes(with: recipeId)
-        getLocalFavs()
-        
         DispatchQueue.main.async {
                     NotificationCenter.default.post(
                         name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
@@ -32,10 +30,10 @@ class SavedVC: UIViewController, LikeDelegate{
     
     lazy var collectionView: UICollectionView = {
               let layout = UICollectionViewFlowLayout()
-              layout.minimumInteritemSpacing = 16
+              layout.minimumInteritemSpacing = 12
         layout.minimumLineSpacing = 16
               layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: (self.view.frame.width/2)-24, height: (self.view.frame.width/1.7))
+        layout.itemSize = CGSize(width: (self.view.frame.width/2)-22, height: (self.view.frame.width/1.65))
               let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
               cv.backgroundColor = backroundColor
               cv.register(RecipeCell.self, forCellWithReuseIdentifier: "cellFav")
@@ -43,11 +41,15 @@ class SavedVC: UIViewController, LikeDelegate{
           }()
     
     override func viewWillAppear(_ animated: Bool) {
-           self.navigationController?.navigationBar.isHidden = true
-       }
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.topItem?.title = "Избранные"
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+    }
        
        override func viewWillDisappear(_ animated: Bool) {
-           self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.isTranslucent = false
        }
     
     let backroundColor = hexStringToUIColor(hex: "0A202B")

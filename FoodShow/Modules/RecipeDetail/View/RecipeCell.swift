@@ -32,9 +32,9 @@ class RecipeCell: UICollectionViewCell{
         
         recipeView.addSubview(mainStackVIew)
         mainStackVIew.snp.makeConstraints { (make) in
-            make.bottom.equalToSuperview().inset(16)
-            make.left.equalToSuperview().offset(16)
-            make.right.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview().inset(12)
+            make.left.equalToSuperview().offset(12)
+            make.right.equalToSuperview().inset(12)
         }
         
         recipeView.snp.makeConstraints { (make) in
@@ -91,16 +91,9 @@ class RecipeCell: UICollectionViewCell{
        return view
     }()
     
-    
-    let gradientMaskLayer: CAGradientLayer = {
-        let grad = CAGradientLayer()
-        grad.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0.1),UIColor.clear.cgColor]
-        return grad
-    }()
-    
     lazy var titleLbl: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .systemFont(ofSize: 14, weight: .bold)
         label.numberOfLines = 2
         label.textColor = .white
         label.textAlignment = .left
@@ -119,7 +112,7 @@ class RecipeCell: UICollectionViewCell{
     
     lazy var persons: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .semibold)
+        label.font = .systemFont(ofSize: 12, weight: .semibold)
         label.numberOfLines = 0
         label.textColor = secondTextColor
         label.textAlignment = .left
@@ -132,7 +125,7 @@ class RecipeCell: UICollectionViewCell{
         button.setImage(icon, for: .normal)
         button.tintColor = .red
         button.imageView?.contentMode = .scaleAspectFit
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return button
     }()
     
@@ -140,7 +133,7 @@ class RecipeCell: UICollectionViewCell{
    fileprivate var pictureView: UIImageView = {
     let image = UIImageView()
     image.contentMode = .scaleAspectFill
-    image.alpha = 0.9
+    image.alpha = 1
     image.clipsToBounds = true
     image.layer.cornerRadius = 16
     image.layer.masksToBounds = true
