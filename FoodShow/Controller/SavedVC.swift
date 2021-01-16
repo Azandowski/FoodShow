@@ -26,7 +26,6 @@ class SavedVC: UIViewController, LikeDelegate{
     
     var items: [RecipeLocalObject] = []
     var recipes: [Recipe] = []
-
     
     lazy var collectionView: UICollectionView = {
               let layout = UICollectionViewFlowLayout()
@@ -75,6 +74,8 @@ class SavedVC: UIViewController, LikeDelegate{
                    selector: #selector(self.recipeNotification),
                    name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
                    object: nil)
+        
+        
     }
     
     @objc func recipeNotification(notification: Notification){
@@ -97,7 +98,15 @@ class SavedVC: UIViewController, LikeDelegate{
 }
 extension SavedVC: UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-           return recipes.count
+        
+        if (self.recipes.count == 0) {
+               self.collectionView.setEmptyMessage("Nothing to show :(")
+           } else {
+               self.collectionView.restore()
+           }
+
+           return self.recipes.count
+           //return recipes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -112,4 +121,30 @@ extension SavedVC: UICollectionViewDelegate, UICollectionViewDataSource{
         return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/1.5)
     }
     
+}
+
+extension UICollectionView {
+    
+//    func setEmptyImage(){
+//
+//        let emptyImage = UIImageView(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+//        self.backgroundView = emptyImage
+//    }
+
+    func setEmptyMessage(_ message: String) {
+        
+        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+        messageLabel.text = message
+        messageLabel.textColor = .black
+        messageLabel.numberOfLines = 0;
+        messageLabel.textAlignment = .center;
+        messageLabel.font = UIFont(name: "TrebuchetMS", size: 15)
+        messageLabel.sizeToFit()
+
+        self.backgroundView = messageLabel;
+    }
+
+    func restore() {
+        self.backgroundView = nil
+    }
 }
