@@ -1,9 +1,8 @@
 //
 //  AppDelegate.swift
-//  FoodShow
+//  FoodShow_aigo
 //
-//  Created by AzaDev on 12/23/20.
-//  Copyright © 2020 TeamOfFour. All rights reserved.
+//  Created by Aigerim Ilipova on 16.01.2021.
 //
 
 import UIKit
@@ -14,8 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        
         // Override point for customization after application launch.
         return true
     }

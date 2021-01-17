@@ -1,9 +1,8 @@
 //
-//  AppDelegate.swift
-//  FoodShow
+//  SceneDelegate.swift
+//  FoodShow_aigo
 //
-//  Created by AzaDev on 12/23/20.
-//  Copyright © 2020 TeamOfFour. All rights reserved.
+//  Created by Aigerim Ilipova on 16.01.2021.
 //
 
 import UIKit
