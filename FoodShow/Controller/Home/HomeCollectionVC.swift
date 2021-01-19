@@ -16,121 +16,15 @@ class HomeCollectionVC: UICollectionViewController{
     var collectionTitleString: String = ""
     var items: [Recipe] = []
     var test: Int?
-    
-    let recItem = Recipe(vegetarian: true,
-                         vegan: true,
-                         glutenFree: true,
-                         veryHealthy: true,
-                         cheap: true,
-                         gaps: "true",
-                         aggregateLikes: 33,
-                         spoonacularScore: 3,
-                         healthScore: 3,
-                         sourceName: "Recipe Test",
-                         extendedIngredients: [],
-                         id: 12,
-                         title: "Recipe Test",
-                         readyInMinutes: 30,
-                         servings: 2,
-                         image: "demoImg",
-                         summary: "demoImg",
-                         cuisines: [],
-                         dishTypes: [],
-                         diets: [],
-                         occasions: [],
-                         instructions: "demoImg",
-                         analyzedInstructions: [],
-                         originalID: nil,
-                         spoonacularSourceURL: "demoImg",
-                         preparationMinutes: 2,
-                         cookingMinutes: 2)
-    let recItemTwo = Recipe(vegetarian: true,
-                         vegan: true,
-                         glutenFree: true,
-                         veryHealthy: true,
-                         cheap: true,
-                         gaps: "true",
-                         aggregateLikes: 33,
-                         spoonacularScore: 3,
-                         healthScore: 3,
-                         sourceName: "Recipe Test",
-                         extendedIngredients: [],
-                         id: 12,
-                         title: "Recipe Test",
-                         readyInMinutes: 10,
-                         servings: 2,
-                         image: "demoImg",
-                         summary: "demoImg",
-                         cuisines: [],
-                         dishTypes: [],
-                         diets: [],
-                         occasions: [],
-                         instructions: "demoImg",
-                         analyzedInstructions: [],
-                         originalID: nil,
-                         spoonacularSourceURL: "demoImg",
-                         preparationMinutes: 2,
-                         cookingMinutes: 2)
-    let recItemThree = Recipe(vegetarian: true,
-                         vegan: true,
-                         glutenFree: true,
-                         veryHealthy: true,
-                         cheap: true,
-                         gaps: "true",
-                         aggregateLikes: 33,
-                         spoonacularScore: 3,
-                         healthScore: 3,
-                         sourceName: "Recipe Test",
-                         extendedIngredients: [],
-                         id: 12,
-                         title: "Cake",
-                         readyInMinutes: 60,
-                         servings: 2,
-                         image: "demoImg",
-                         summary: "demoImg",
-                         cuisines: [],
-                         dishTypes: [],
-                         diets: [],
-                         occasions: [],
-                         instructions: "demoImg",
-                         analyzedInstructions: [],
-                         originalID: nil,
-                         spoonacularSourceURL: "demoImg",
-                         preparationMinutes: 2,
-                         cookingMinutes: 2)
-    let recItemFour = Recipe(vegetarian: true,
-                         vegan: true,
-                         glutenFree: true,
-                         veryHealthy: true,
-                         cheap: true,
-                         gaps: "true",
-                         aggregateLikes: 33,
-                         spoonacularScore: 3,
-                         healthScore: 3,
-                         sourceName: "Recipe Test",
-                         extendedIngredients: [],
-                         id: 12,
-                         title: "Salad",
-                         readyInMinutes: 25,
-                         servings: 2,
-                         image: "demoImg",
-                         summary: "demoImg",
-                         cuisines: [],
-                         dishTypes: [],
-                         diets: [],
-                         occasions: [],
-                         instructions: "demoImg",
-                         analyzedInstructions: [],
-                         originalID: nil,
-                         spoonacularSourceURL: "demoImg",
-                         preparationMinutes: 2,
-                         cookingMinutes: 2)
-    
-    
-
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NetworkService.request(for: Recipes.self, router: Router.getRandom,id: 0, params: [], completion: { [self] (result: Recipes) in
+            items = result.recipes
+            self.collectionView.reloadData()
+         })
+            
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -139,10 +33,6 @@ class HomeCollectionVC: UICollectionViewController{
 
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
-        items.append(recItem)
-        items.append(recItemTwo)
-        items.append(recItemThree)
-        items.append(recItemFour)
         
 //        NetworkService.request(router: Router.getRandom,id: 0) { (result: [String? : [Recipe]]) in
 //            self.items = result["recipes"]!
@@ -192,7 +82,16 @@ class HomeCollectionVC: UICollectionViewController{
     
         return cell!
     }
-
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = ResultsViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+        // do stuff with image, or with other data that you need
+    }
+//
+//    let vc = RecipeDetailViewController(recipe: items[indexPath.row])
+//    self.navigationController?.pushViewController(vc, animated: true)
+    
     // MARK: UICollectionViewDelegate
 
     /*

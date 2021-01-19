@@ -249,8 +249,8 @@ class IngredientsStackView: UITableViewCell, ConfigurableCell {
         if recipe.extendedIngredients != nil && ingredientsColumn.subviews.count == 0{
           initialServings = recipe.servings
           ingredients = recipe.extendedIngredients
-          servingsCount = recipe.servings
-          ingredientsColumn.addArrangedSubview(addHeader(servings: recipe.servings))
+          servingsCount = recipe.servings ?? 10
+          ingredientsColumn.addArrangedSubview(addHeader(servings: recipe.servings ?? 2))
           addLines(items: recipe.extendedIngredients!)
         }
     }
@@ -364,7 +364,7 @@ class SimilarListCell: UITableViewCell, ConfigurableCell {
     
     func configure(data id: Int) {
         if(self.recipesAll == nil){
-            NetworkService.request(router: Router.getSimilar, id: id) { (result: [String? : [Recipe]]) in
+            NetworkService.request(router: Router.getSimilar, id: id, params: []) { (result: [String? : [Recipe]]) in
                 self.recipesAll = result["recipies"]!
                 self.similarCollectionView.reloadData()
             }

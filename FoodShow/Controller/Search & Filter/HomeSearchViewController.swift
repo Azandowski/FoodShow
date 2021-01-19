@@ -10,8 +10,8 @@ import UIKit
 
 class HomeSearchViewController: UIViewController, UISearchBarDelegate {
     
-    let searchTexts =[ "Cake", "Recipe Test", "Salad" ]
-    var filteredData = [String]!
+    let searchTexts = [ "Cake", "Recipe Test", "Salad" ]
+    var filteredData : [String]? = []
 
     @IBOutlet weak var searchBarS: UISearchBar!
     @IBOutlet weak var filterButton: UIButton!

@@ -18,10 +18,15 @@ class HomeTableVC: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        NetworkService.request(router: Router.getRandom,id: 0) { (result: [String? : [Recipe]]) in
-            self.items = result["recipes"]!
-            self.tableView.reloadData()
-         }
+//        NetworkService.requestRandom(router: Router.getRandom,id: 0, params:[], completion: { (result: [String? : [Recipe]]) in
+//                   self.items = result["recipes"]!
+//                   self.tableView.reloadData()
+//                })
+//        NetworkService.request(for: Recipes.self, router: Router.getRandom,id: 0, params: [], completion: { (result: Recipes) in
+//            print(result.recipes[0].title)
+//            self.tableView.reloadData()
+//         })
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.recipeNotification),

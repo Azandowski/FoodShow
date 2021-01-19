@@ -58,8 +58,8 @@ final class RecipeLocalService: RecipeService {
             recipeL.occasions = recipe.occasions!
             recipeL.preparationMinutes = recipe.preparationMinutes ?? 0
             recipeL.pricePerServing = recipe.pricePerServing!
-            recipeL.readyInMinutes = recipe.readyInMinutes
-            recipeL.servings = recipe.servings
+            recipeL.readyInMinutes = recipe.readyInMinutes ?? 10
+            recipeL.servings = recipe.servings ?? 2
             recipeL.sourceName = recipe.sourceName!
             recipeL.spoonacularScore = recipe.spoonacularScore!
             recipeL.spoonacularSourceURL = recipe.spoonacularSourceURL!

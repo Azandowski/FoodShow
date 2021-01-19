@@ -9,13 +9,13 @@ import Foundation
 
 class NetworkService {
     
-    class func request<T: Codable>(router: Router, id:Int?, completion: @escaping ([String: [T]]) -> ()) {
+    class func request<T: Codable>(for: T.Type = T.self, router: Router, id:Int?,params: [URLQueryItem]?, completion: @escaping (T) -> ()) {
         
         var components = URLComponents()
         components.scheme = router.scheme
         components.host = router.host
         components.path = router.getPath(id: id)
-        components.queryItems = router.parameters
+        components.queryItems = router.parameters(params: params ?? [])
         
         let session = URLSession(configuration: .default)
         guard let url = components.url else { return }
@@ -36,18 +36,12 @@ class NetworkService {
                 print("no data")
                 return
             }
-            if router == Router.getSimilar{
-                print(data)
-               let responseObject = try! JSONDecoder().decode([T].self, from: data)
-                DispatchQueue.main.async {
-                    completion(["recipies": responseObject])
-                }
-            }else{
-                let responseObject = try! JSONDecoder().decode([String: [T]].self, from: data)
-                DispatchQueue.main.async {
-                    completion(responseObject)
-                }
-            }
+            
+                let responseObject = try!  JSONDecoder().decode(T.self, from: data)
+                 DispatchQueue.main.async {
+                     completion(responseObject)
+                 }
+            
         }
         dataTask.resume()
     }

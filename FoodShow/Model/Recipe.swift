@@ -16,17 +16,14 @@ struct Recipes: Codable {
 struct Recipe: Codable {
     let vegetarian, vegan, glutenFree: Bool?
     let veryHealthy, cheap: Bool?
-//    let weightWatcherSmartPoints: Int?
     let gaps: String?
-//    let lowFodmap: Bool?
     let aggregateLikes, spoonacularScore, healthScore: Int?
     let sourceName: String?
     var pricePerServing: Double?
     let extendedIngredients: [ExtendedIngredient]?
     let id: Int
     let title: String
-    let readyInMinutes, servings: Int
-//    let sourceURL: String?
+    let readyInMinutes, servings: Int?
     let image: String?
     let summary: String?
     let cuisines, dishTypes, diets, occasions: [String]?
@@ -45,7 +42,6 @@ struct Recipe: Codable {
     
     enum CodingKeys: String, CodingKey {
         case vegetarian, vegan, glutenFree, veryHealthy, cheap, gaps, aggregateLikes, spoonacularScore, healthScore, sourceName, pricePerServing, extendedIngredients, id, title, readyInMinutes, servings
-//        case sourceURL = "sourceUrl"
         case image, summary, cuisines, dishTypes, diets, occasions, instructions, analyzedInstructions
         case originalID = "originalId"
         case spoonacularSourceURL = "spoonacularSourceUrl"
@@ -59,7 +55,7 @@ struct AnalyzedInstruction: Codable {
 }
 
 struct Step: Codable {
-    let number: Int
+    let number: Int?
     let step: String
     let ingredients, equipment: [Ent]
     let length: Length?
@@ -165,12 +161,12 @@ extension Recipe {
         let recipeSaved = RecipeLocalObject()
         recipeSaved.id = self.id
         recipeSaved.title = self.title
-        recipeSaved.readyInMinutes = self.readyInMinutes
+        recipeSaved.readyInMinutes = self.readyInMinutes ?? 10
         recipeSaved.extendedIngredients = self.extendedIngredients!
         recipeSaved.spoonacularScore = self.spoonacularScore ?? 20
         recipeSaved.image = self.image ?? ""
         recipeSaved.analyzedInstructions = self.analyzedInstructions ?? []
-        recipeSaved.servings = self.servings
+        recipeSaved.servings = self.servings ?? 2
         recipeSaved.aggregateLikes = self.aggregateLikes ?? 10
         recipeSaved.vegan = self.vegan ?? false
         recipeSaved.vegetarian = self.vegetarian ?? false
