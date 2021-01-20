@@ -126,6 +126,11 @@ extension SavedVC: UICollectionViewDelegate, UICollectionViewDataSource{
         return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/1.5)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = RecipeDetailViewController(recipe: recipes[indexPath.row])
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
 }
 
 extension UICollectionView {
