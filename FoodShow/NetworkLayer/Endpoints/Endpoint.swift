@@ -15,8 +15,9 @@ enum Router {
     case getSearch
     case getRecipesById
     
+    
     var accessToken: String {
-        return "6c2f2b1eded0428582f6add38a448913"
+        return "7fc7a140de7a412aa0a77cf1e7a6d502"
     }
     
     
@@ -56,11 +57,11 @@ enum Router {
         switch self {
         case .getRandom:
             return [URLQueryItem(name: "limitLicense", value: "false"),
-                    URLQueryItem(name: "number", value: "5"),
+                    URLQueryItem(name: "number", value: "8"),
                     URLQueryItem(name: "apiKey", value: accessToken)]
         case .getSimilar:
             return [URLQueryItem(name: "limitLicense", value: "false"),
-                    URLQueryItem(name: "number", value: "5"),
+                    URLQueryItem(name: "number", value: "6"),
                     URLQueryItem(name: "apiKey", value: accessToken)]
         case .getSearch:
             return [URLQueryItem(name: "limitLicense", value: "false"),

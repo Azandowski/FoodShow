@@ -100,6 +100,11 @@ class ResultsViewController: UICollectionViewController, UISearchBarDelegate, Li
         return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/1.5)
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = RecipeDetailViewController(recipe: resipeResults[indexPath.row])
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     init() {
            super.init(collectionViewLayout: UICollectionViewFlowLayout())
            collectionView?.collectionViewLayout = layoutView

@@ -70,16 +70,17 @@ class AnimatedHeader: UIView {
           return overlayView
       }()
     
+    lazy var pictureView: UIImageView = {
+             let imageView = UIImageView()
+             imageView.contentMode = .scaleAspectFill
+             imageView.clipsToBounds = true
+             imageView.layer.masksToBounds = true
+             return imageView
+         }()
+    
     lazy var animatedView: UIView = {
             let vw = UIView()
             vw.backgroundColor = UIColor.red
-            let pictureView: UIImageView = {
-                     let imageView = UIImageView()
-                     imageView.contentMode = .scaleAspectFill
-                     imageView.clipsToBounds = true
-                     imageView.layer.masksToBounds = true
-                     return imageView
-                 }()
            vw.addSubview(pictureView)
            vw.addSubview(overlayView)
            vw.addSubview(titleLbl)
@@ -333,6 +334,8 @@ class SimilarListCell: UITableViewCell, ConfigurableCell {
     
     var recipesAll: [Recipe]?
     
+    var navigationController: UINavigationController?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(similarCollectionView)
@@ -364,10 +367,11 @@ class SimilarListCell: UITableViewCell, ConfigurableCell {
     
     func configure(data id: Int) {
         if(self.recipesAll == nil){
-            NetworkService.request(router: Router.getSimilar, id: id, params: []) { (result: [String? : [Recipe]]) in
-                self.recipesAll = result["recipies"]!
+            NetworkService.request(for: RecipeFind.self, router: Router.getSimilar,id: id, params: [], completion: { [self] (result: RecipeFind) in
+                self.recipesAll = result
                 self.similarCollectionView.reloadData()
-            }
+             })
+
         }
     }
 }
@@ -397,6 +401,11 @@ extension SimilarListCell: UICollectionViewDelegateFlowLayout, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGSize {
         return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/2)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = RecipeDetailViewController(recipe: (recipesAll?[indexPath.row])!)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

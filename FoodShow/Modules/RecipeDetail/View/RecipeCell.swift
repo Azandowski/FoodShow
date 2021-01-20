@@ -144,8 +144,8 @@ class RecipeCell: UICollectionViewCell{
         fatalError("init(coder:) has not been implemented")
     }
     func configure(recipe: Recipe!){
-        minute.text = recipe.readyInMinutes == nil ? "" : "\(recipe.readyInMinutes) min"
-        persons.text = recipe.servings == nil ? "" : "\(recipe.servings) people"
+        minute.text = recipe.readyInMinutes == nil ? "" : "\(recipe.readyInMinutes!) min"
+        persons.text = recipe.servings == nil ? "" : "\(recipe.servings!) people"
         titleLbl.text = (recipe.title)
         likeButton.tag = recipe.id
         pictureView.sd_setImage(with: URL(string: recipe!.image ?? "https://spoonacular.com/recipeImages/716298-556x370.jpg"))

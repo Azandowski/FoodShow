@@ -10,13 +10,27 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class HomeCollectionVC: UICollectionViewController{
+class HomeCollectionVC: UICollectionViewController, LikeDelegate{
+    
+    func likeButtonTapped(_ recipeId: Int) {
+        
+    }
     
     let networkService = NetworkService()
     var collectionTitleString: String = ""
     var items: [Recipe] = []
     var test: Int?
-   
+    
+    let backroundColor = hexStringToUIColor(hex: "0A202B")
+
+    lazy var layoutView: UICollectionViewFlowLayout = {
+     let layout = UICollectionViewFlowLayout()
+     layout.minimumInteritemSpacing = 12
+     layout.minimumLineSpacing = 16
+     layout.scrollDirection = .vertical
+     return layout
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,27 +38,18 @@ class HomeCollectionVC: UICollectionViewController{
             items = result.recipes
             self.collectionView.reloadData()
          })
-            
+        collectionView.backgroundColor = backroundColor
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView?.collectionViewLayout = layoutView
+        collectionView!.contentInset = UIEdgeInsets(top: 16, left: 16, bottom: 10, right: 16)
         
-        let nibCell = UINib(nibName: "HomeRecCell", bundle: nil)
-        collectionView.register(nibCell, forCellWithReuseIdentifier: "HomeRecCellID")
-
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
-        
-//        NetworkService.request(router: Router.getRandom,id: 0) { (result: [String? : [Recipe]]) in
-//            self.items = result["recipes"]!
-//            self.collectionView.reloadData()
-//         }
-//        
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(self.recipeNotification),
-//            name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
-//            object: nil)
-
+        self.collectionView.register(RecipeCell.self, forCellWithReuseIdentifier: "cellMain")
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        layoutView.itemSize = CGSize(width: (self.view.frame.width/2)-22, height: (self.view.frame.width/1.65))
     }
     
     @objc func recipeNotification(notification: Notification){
@@ -54,7 +59,6 @@ class HomeCollectionVC: UICollectionViewController{
                     self.collectionView.reloadData()
                 }
             }
-            
     }
 
 
@@ -73,21 +77,19 @@ class HomeCollectionVC: UICollectionViewController{
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeRecCellID", for: indexPath) as? HomeRecCell
-        
-       
-    
-        cell!.createCell( items[indexPath.row] )
-        
-    
-        return cell!
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellMain", for: indexPath) as! RecipeCell
+        cell.delegate = self
+        cell.backgroundColor = backroundColor
+        cell.configure(recipe: items[indexPath.row])
+        return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = ResultsViewController()
         self.navigationController?.pushViewController(vc, animated: true)
-        // do stuff with image, or with other data that you need
     }
+
+    
 //
 //    let vc = RecipeDetailViewController(recipe: items[indexPath.row])
 //    self.navigationController?.pushViewController(vc, animated: true)

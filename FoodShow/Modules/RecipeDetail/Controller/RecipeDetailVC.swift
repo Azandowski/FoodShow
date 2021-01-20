@@ -13,7 +13,12 @@ import SDWebImageSVGCoder
 
 class RecipeDetailViewController: UIViewController {
   
-    var recipe: Recipe!
+    var recipe: Recipe!{
+        didSet{
+            animatedHeader.recipe = recipe
+        }
+    }
+    
     var recipeId: Int = 0
 
      init(recipe:Recipe){
@@ -64,8 +69,9 @@ class RecipeDetailViewController: UIViewController {
     override func viewDidLoad() {
     super.viewDidLoad()
         self.view.addSubview(tableView)
-        self.view.addSubview(animatedHeader)
         self.view.backgroundColor = .black
+        self.view.addSubview(animatedHeader)
+        checkRecipe()
         tableView.snp.makeConstraints { (make) in make.edges.equalToSuperview() }
         animatedHeader.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: self.view.frame.height * 0.4)
         
@@ -74,6 +80,17 @@ class RecipeDetailViewController: UIViewController {
                    selector: #selector(self.recipeNotification),
                    name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
                    object: nil)
+    }
+    
+    func checkRecipe(){
+        if(recipe.spoonacularScore == nil){
+            NetworkService.request(for: RecipeFind.self, router: Router.getRecipesById,id: 0, params: [URLQueryItem(name: "ids", value: "\(recipe.id)")], completion: { [self] (result: RecipeFind) in
+                self.recipe = result[0]
+                animatedHeader.pictureView.sd_setImage(with: URL(string: recipe.image ?? ""))
+
+             tableView.reloadData()
+             })
+        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -96,7 +113,7 @@ class RecipeDetailViewController: UIViewController {
            if let result = notification.object as? Recipe {
                print(result.isFav)
                recipe.isFav = result.isFav
-               viewModel.updateItems(recipe: result)
+               viewModel.getRecipeItems(recipe: result)
                tableView.reloadData()
            }
            
@@ -109,13 +126,14 @@ class RecipeDetailViewController: UIViewController {
                     let favItems: [Recipe] = [self.recipe]
                     let newFavRecipe = RL.convertToRecipeLocalObject(with: favItems)
                     RL.saveRecipe(with: newFavRecipe)
+                    print(recipe)
                     self.recipe.isFav = true
-                    viewModel.updateItems(recipe: self.recipe)
+                    viewModel.getRecipeItems(recipe: self.recipe)
                     tableView.reloadData()
             } else{
                 RL.removeRecipes(with: recipe.id)
                     self.recipe.isFav = false
-                    viewModel.updateItems(recipe: self.recipe)
+                    viewModel.getRecipeItems(recipe: self.recipe)
                     tableView.reloadData()
 
                   }
@@ -131,7 +149,7 @@ class RecipeDetailViewController: UIViewController {
     extension RecipeDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.updateItems(recipe: recipe).count
+        return viewModel.getRecipeItems(recipe: recipe).count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -139,15 +157,20 @@ class RecipeDetailViewController: UIViewController {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = viewModel.updateItems(recipe: recipe)[indexPath.section]
+        let item = viewModel.getRecipeItems(recipe: recipe)[indexPath.section]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: type(of: item).reuseId)!
+        
+        if (cell is SimilarListCell) {
+            (cell as! SimilarListCell).navigationController = self.navigationController
+        }
+        
         
         cell.backgroundColor = .black
       
         item.configure(cell: cell)
         
-        if  viewModel.updateItems(recipe: recipe)[indexPath.section] is ButtonCellConfig{
+        if  viewModel.getRecipeItems(recipe: recipe)[indexPath.section] is ButtonCellConfig{
             (cell as! ButtonCell).buttonUI.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         }
         return cell
@@ -164,17 +187,17 @@ class RecipeDetailViewController: UIViewController {
                       return stepText
                    }()
         
-            if viewModel.updateItems(recipe: recipe)[section] is StepCellConfig {
+            if viewModel.getRecipeItems(recipe: recipe)[section] is StepCellConfig {
                 
                 headerStep.text =  "Step: \(section-3 + 1)/\(recipe.analyzedInstructions![0].steps.count)"
                 return headerStep
                 
-               }else if viewModel.updateItems(recipe: recipe)[section] is SimilarListConfig {
+               }else if viewModel.getRecipeItems(recipe: recipe)[section] is SimilarListConfig {
                 
                 headerStep.text =  "Similar Recipies"
                 return headerStep
                 
-               } else if viewModel.updateItems(recipe: recipe)[section] is IngredientsCellConfig {
+               } else if viewModel.getRecipeItems(recipe: recipe)[section] is IngredientsCellConfig {
                 
                 headerStep.text =  "Ingredients"
                 return headerStep

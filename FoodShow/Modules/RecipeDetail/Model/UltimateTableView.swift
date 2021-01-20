@@ -19,7 +19,17 @@ typealias IngredientsCellConfig = TableCellConfigurator<IngredientsStackView, Re
 
 class TableViewModel {
     
-    func updateItems(recipe: Recipe!) -> [CellConfigurator]{
+    func getRecipeItems(recipe: Recipe!) -> [CellConfigurator]{
+        var items: [CellConfigurator] = []
+        
+        if(recipe.spoonacularScore != nil){
+           items = returnItem(recipe: recipe)
+        }
+        
+        return items
+    }
+    
+    func returnItem(recipe: Recipe!)-> [CellConfigurator]{
         var items: [CellConfigurator] = []
         items.append(DetailStackConfig.init(item: recipe))
         items.append(IngredientsCellConfig.init(item: recipe))
@@ -30,7 +40,6 @@ class TableViewModel {
                    }
         }
         items.append(SimilarListConfig.init(item: recipe.id))
-        
         return items
     }
 }

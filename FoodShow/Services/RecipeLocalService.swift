@@ -54,7 +54,7 @@ final class RecipeLocalService: RecipeService {
             recipeL.healthScore  = recipe.healthScore!
             recipeL.id = recipe.id
             recipeL.image  = recipe.image!
-            recipeL.instructions = recipe.instructions!
+            recipeL.instructions = recipe.instructions ?? ""
             recipeL.occasions = recipe.occasions!
             recipeL.preparationMinutes = recipe.preparationMinutes ?? 0
             recipeL.pricePerServing = recipe.pricePerServing!
@@ -62,7 +62,6 @@ final class RecipeLocalService: RecipeService {
             recipeL.servings = recipe.servings ?? 2
             recipeL.sourceName = recipe.sourceName!
             recipeL.spoonacularScore = recipe.spoonacularScore!
-            recipeL.spoonacularSourceURL = recipe.spoonacularSourceURL!
             recipeL.summary = recipe.summary!
             recipeL.title = recipe.title
             recipeL.vegan = recipe.vegan!

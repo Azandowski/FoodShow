@@ -13,7 +13,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="4c7-fW-WWX">
             <objects>
-                <tabBarController id="JYC-QM-x9t" sceneMemberID="viewController">
+                <tabBarController extendedLayoutIncludesOpaqueBars="YES" id="JYC-QM-x9t" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="qP6-lq-siE">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -35,13 +35,13 @@
         <!--Delicious food for you-->
         <scene sceneID="mSW-dF-ePj">
             <objects>
-                <viewController id="jIg-JB-igl" customClass="Home" customModule="FoodShow" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="jIg-JB-igl" customClass="Home" customModule="FoodShow" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="j0i-Vp-mVk">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="673"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ltJ-NV-BLG">
-                                <rect key="frame" x="0.0" y="166" width="414" height="507"/>
+                                <rect key="frame" x="0.0" y="248" width="414" height="648"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" red="0.039215686270000001" green="0.12549019610000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
@@ -49,7 +49,7 @@
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="02b-42-Sgz">
-                                <rect key="frame" x="0.0" y="57" width="414" height="110"/>
+                                <rect key="frame" x="0.0" y="140" width="414" height="110"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" red="0.039215686270000001" green="0.12549019610000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
@@ -126,7 +126,7 @@
         <!--Navigation Controller-->
         <scene sceneID="3bv-rp-7dM">
             <objects>
-                <navigationController id="dsA-3j-Bgz" sceneMemberID="viewController">
+                <navigationController extendedLayoutIncludesOpaqueBars="YES" id="dsA-3j-Bgz" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="heart" selectedImage="heartSelected" id="Pfy-8e-UvD">
                         <color key="badgeColor" red="0.90980392160000001" green="0.48627450979999998" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
                     </tabBarItem>
@@ -153,9 +153,9 @@
         <!--SavedVC-->
         <scene sceneID="cEH-pJ-qAj">
             <objects>
-                <viewController id="UEE-hm-eK7" customClass="SavedVC" customModule="FoodShow" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="UEE-hm-eK7" customClass="SavedVC" customModule="FoodShow" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JkD-3p-7E7">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="673"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="glO-pj-2I8"/>
                         <color key="backgroundColor" red="0.039215686270000001" green="0.12549019610000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -169,7 +169,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ZHu-Tq-eBr">
             <objects>
-                <navigationController id="0jd-6m-z2L" sceneMemberID="viewController">
+                <navigationController extendedLayoutIncludesOpaqueBars="YES" id="0jd-6m-z2L" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="home" selectedImage="homeSelected" id="Ute-pv-iOD">
                         <color key="badgeColor" red="0.039215686270000001" green="0.12549019610000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                     </tabBarItem>
@@ -304,7 +304,7 @@
             <objects>
                 <collectionViewController id="e7a-jq-Zel" customClass="HomeCollectionVC" customModule="FoodShow" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="qhf-Gw-9Sh">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="507"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="648"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.039215686270000001" green="0.12549019610000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mOV-eY-Ad8">
