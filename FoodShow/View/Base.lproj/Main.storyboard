@@ -71,7 +71,7 @@
             <objects>
                 <tableViewController id="1Dq-u3-Gkv" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="N5c-qo-ekN">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.37647058823529411" green="0.64313725490196072" blue="0.58431372549019611" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -95,6 +95,46 @@
             </objects>
             <point key="canvasLocation" x="380" y="2060"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="RvR-l5-J0K">
+            <objects>
+                <viewController id="fKX-Kn-Llc" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nui-6C-BYd">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="c5y-ec-fDC">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="© All rigths is reserved by Team4Dev" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8U8-55-qcU">
+                                <rect key="frame" x="0.0" y="370" width="414" height="255"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="jmJ-du-9VG"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <accessibilityTraits key="traits" image="YES"/>
+                        </accessibility>
+                        <constraints>
+                            <constraint firstItem="jmJ-du-9VG" firstAttribute="bottom" secondItem="c5y-ec-fDC" secondAttribute="bottom" id="ERi-Ze-gfS"/>
+                            <constraint firstItem="jmJ-du-9VG" firstAttribute="trailing" secondItem="8U8-55-qcU" secondAttribute="trailing" id="NVq-2m-IRm"/>
+                            <constraint firstItem="8U8-55-qcU" firstAttribute="leading" secondItem="jmJ-du-9VG" secondAttribute="leading" id="ccY-fv-opA"/>
+                            <constraint firstItem="c5y-ec-fDC" firstAttribute="leading" secondItem="jmJ-du-9VG" secondAttribute="leading" id="cnf-F6-6Xm"/>
+                            <constraint firstItem="jmJ-du-9VG" firstAttribute="trailing" secondItem="c5y-ec-fDC" secondAttribute="trailing" id="qTT-h0-JPJ"/>
+                            <constraint firstItem="8U8-55-qcU" firstAttribute="top" secondItem="jmJ-du-9VG" secondAttribute="top" constant="370" id="uuF-9Q-WOQ"/>
+                            <constraint firstItem="jmJ-du-9VG" firstAttribute="bottom" secondItem="8U8-55-qcU" secondAttribute="bottom" constant="100" id="wue-WQ-w43"/>
+                            <constraint firstItem="c5y-ec-fDC" firstAttribute="top" secondItem="jmJ-du-9VG" secondAttribute="top" id="ytb-jm-ShB"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="EFa-a3-Qno"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="34i-Nq-Ns1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1139" y="2045"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="c1d-vy-jsp">
             <objects>
@@ -116,7 +156,7 @@
                         </textAttributes>
                     </navigationBar>
                     <connections>
-                        <segue destination="1Dq-u3-Gkv" kind="relationship" relationship="rootViewController" id="xlj-1E-cvF"/>
+                        <segue destination="fKX-Kn-Llc" kind="relationship" relationship="rootViewController" id="qf6-BS-nQ9"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VfS-N8-ZTs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -490,6 +530,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="LaunchScreen" width="1212" height="827"/>
         <image name="filter" width="22" height="20"/>
         <image name="filterSelected" width="22" height="20"/>
         <image name="heart" width="24" height="22"/>
