@@ -330,7 +330,33 @@ class IngredientsStackView: UITableViewCell, ConfigurableCell {
           }
 }
 
-class SimilarListCell: UITableViewCell, ConfigurableCell {
+class SimilarListCell: UITableViewCell, ConfigurableCell, LikeDelegate {
+    
+    func likeButtonTapped(_ recipeId: Int) {
+        var result: [Recipe] = []
+        let recipe = recipesAll!.first { (recipe) -> Bool in
+            recipe.id == recipeId }!
+        result.append(recipe)
+
+        let RL = RecipeLocalService()
+        if result[0].isFav{
+            RL.removeRecipes(with: recipeId)
+            result[0].isFav = false
+            print("no, \(result[0].id)")        }
+        else{
+            let newFavoriteRecipe = RL.convertToRecipeLocalObject(with: result)
+            RL.saveRecipe(with: newFavoriteRecipe)
+            result[0].isFav=true
+            print("yes, \(result[0].id)")
+        }
+       
+        DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+                        object: result[0] )
+                }
+        //similarCollectionView.reloadData()
+    }
     
     var recipesAll: [Recipe]?
     
@@ -347,10 +373,29 @@ class SimilarListCell: UITableViewCell, ConfigurableCell {
 
         similarCollectionView.delegate = self
         similarCollectionView.dataSource = self
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.recipeNotification),
+            name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+            object: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc func recipeNotification(notification: Notification){
+            if let result = notification.object as? Recipe {
+                
+                recipesAll?.forEach{
+                    item in if item.id  ==  result.id
+                    {
+                      //  item.isFav = result.isFav
+                    }
+                }
+            }
+        self.similarCollectionView.reloadData()
     }
     
     fileprivate let similarCollectionView: UICollectionView = {
@@ -368,7 +413,9 @@ class SimilarListCell: UITableViewCell, ConfigurableCell {
     func configure(data id: Int) {
         if(self.recipesAll == nil){
             NetworkService.request(for: RecipeFind.self, router: Router.getSimilar,id: id, params: [], completion: { [self] (result: RecipeFind) in
-                self.recipesAll = result
+                let RL = RecipeLocalService()
+                self.recipesAll = RL.checkIsFav(with: result)
+               // self.recipesAll = result
                 self.similarCollectionView.reloadData()
              })
 
@@ -387,6 +434,7 @@ extension SimilarListCell: UICollectionViewDelegateFlowLayout, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RecipeCell
+        cell.delegate = self
         cell.layer.cornerRadius = 12
         cell.layer.shadowColor = UIColor.lightGray.cgColor
         cell.layer.shadowOffset = CGSize(width: 0, height: 2.0)

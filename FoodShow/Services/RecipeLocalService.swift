@@ -53,7 +53,7 @@ final class RecipeLocalService: RecipeService {
             recipeL.glutenFree = recipe.glutenFree ?? false
             recipeL.healthScore  = recipe.healthScore ?? 0
             recipeL.id = recipe.id
-            recipeL.image  = recipe.image!
+            recipeL.image  = recipe.image ?? "https://spoonacular.com/recipeImages/716298-556x370.jpg"
             recipeL.instructions = recipe.instructions ?? ""
             recipeL.occasions = recipe.occasions ?? [""]
             recipeL.preparationMinutes = recipe.preparationMinutes ?? 0

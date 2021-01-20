@@ -44,6 +44,7 @@ class SavedVC: UIViewController, LikeDelegate{
         self.navigationController?.navigationBar.topItem?.title = "Избранные"
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        self.navigationController?.navigationBar.backgroundColor = backroundColor
         
     }
        
