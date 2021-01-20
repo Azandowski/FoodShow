@@ -11,7 +11,30 @@ import UIKit
 class ResultsViewController: UICollectionViewController, UISearchBarDelegate, LikeDelegate{
 
     func likeButtonTapped(_ recipeId: Int) {
-        
+        var result: [Recipe] = []
+        for recipe in resipeResults {
+            if recipe.id == recipeId{
+                result.append(recipe)
+            }
+        }
+        let RL = RecipeLocalService()
+        if result[0].isFav{
+            RL.removeRecipes(with: recipeId)
+            result[0].isFav = false
+            print("no, \(result[0].id)")        }
+        else{
+            let newFavoriteRecipe = RL.convertToRecipeLocalObject(with: result)
+            RL.saveRecipe(with: newFavoriteRecipe)
+
+            result[0].isFav=true
+            print("yes, \(result[0].id)")
+        }
+       
+        DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+                        object: result[0] )
+                }
     }
     
     private let cellId = "searchCellID"
@@ -29,7 +52,29 @@ class ResultsViewController: UICollectionViewController, UISearchBarDelegate, Li
         collectionView.register(RecipeCell.self, forCellWithReuseIdentifier: cellId)
         collectionView!.contentInset = UIEdgeInsets(top: 16, left: 16, bottom: 10, right: 16)
         setupSearchBar()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.recipeNotification),
+            name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+            object: nil)
+        
+        
     }
+    
+    
+    @objc func recipeNotification(notification: Notification){
+            if let result = notification.object as? Recipe {
+                if let i = resipeResults.firstIndex(where: { $0.id == result.id }) {
+                    resipeResults[i].isFav = result.isFav
+                    self.collectionView.reloadData()
+                }
+            }
+
+    }
+    
+    
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         layoutView.itemSize = CGSize(width: (self.view.frame.width/2)-22, height: (self.view.frame.width/1.65))
@@ -65,7 +110,9 @@ class ResultsViewController: UICollectionViewController, UISearchBarDelegate, Li
             timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
                 
                 NetworkService.request(for: ResultSearch.self, router: Router.getSearch,id: 0, params: [URLQueryItem(name: "query", value: foodName)]) { (result: ResultSearch) in
-                    self.resipeResults = result.results
+                    let RL = RecipeLocalService()
+                    self.resipeResults = RL.checkIsFav(with: result.results)
+
                     self.collectionView.reloadData()
                  }
             })

@@ -43,30 +43,30 @@ final class RecipeLocalService: RecipeService {
         var result = [RecipeLocalObject]()
         for recipe in recipes {
             let recipeL = RecipeLocalObject()
-            recipeL.aggregateLikes = recipe.aggregateLikes!
-            recipeL.cheap = recipe.cheap!
+            recipeL.aggregateLikes = recipe.aggregateLikes ?? 0
+            recipeL.cheap = recipe.cheap ?? false
             recipeL.cookingMinutes = recipe.cookingMinutes ?? 0
-            recipeL.cuisines = recipe.cuisines!
-            recipeL.diets = recipe.diets!
-            recipeL.dishTypes = recipe.dishTypes!
-            recipeL.gaps  = recipe.gaps!
-            recipeL.glutenFree = recipe.glutenFree!
-            recipeL.healthScore  = recipe.healthScore!
+            recipeL.cuisines = recipe.cuisines ?? [""]
+            recipeL.diets = recipe.diets ?? [""]
+            recipeL.dishTypes = recipe.dishTypes ?? [""]
+            recipeL.gaps  = recipe.gaps ?? ""
+            recipeL.glutenFree = recipe.glutenFree ?? false
+            recipeL.healthScore  = recipe.healthScore ?? 0
             recipeL.id = recipe.id
             recipeL.image  = recipe.image!
             recipeL.instructions = recipe.instructions ?? ""
-            recipeL.occasions = recipe.occasions!
+            recipeL.occasions = recipe.occasions ?? [""]
             recipeL.preparationMinutes = recipe.preparationMinutes ?? 0
-            recipeL.pricePerServing = recipe.pricePerServing!
+            recipeL.pricePerServing = recipe.pricePerServing ?? 0.0
             recipeL.readyInMinutes = recipe.readyInMinutes ?? 10
             recipeL.servings = recipe.servings ?? 2
-            recipeL.sourceName = recipe.sourceName!
-            recipeL.spoonacularScore = recipe.spoonacularScore!
-            recipeL.summary = recipe.summary!
+            recipeL.sourceName = recipe.sourceName ?? ""
+            recipeL.spoonacularScore = recipe.spoonacularScore ??  -10
+            recipeL.summary = recipe.summary ?? ""
             recipeL.title = recipe.title
-            recipeL.vegan = recipe.vegan!
-            recipeL.vegetarian = recipe.vegetarian!
-            recipeL.veryHealthy = recipe.veryHealthy!
+            recipeL.vegan = recipe.vegan ?? false
+            recipeL.vegetarian = recipe.vegetarian ?? false
+            recipeL.veryHealthy = recipe.veryHealthy ?? false
             recipeL.extendedIngredients = recipe.extendedIngredients ?? []
             recipeL.analyzedInstructions = recipe.analyzedInstructions ?? []
             recipeL.originalID = recipe.originalID
@@ -127,57 +127,23 @@ final class RecipeLocalService: RecipeService {
         let realm = try! Realm()
         let models = realm.objects(RecipeLocalObject.self)
         return Array(models).map {
-            print($0.id)
+            //print($0.id)
             return Recipe(managedObject: $0)
         }
     }
-    
-//    func convertToRecipeStruct(with recipes: [RecipeLocalObject]) -> [Recipe] {
-//
-//        var result = [Recipe]()
-//        for recipe in recipes {
-//            var recipeL = Recipe()
-//            recipeL.aggregateLikes = recipe.aggregateLikes!
-//            recipeL.cheap = recipe.cheap!
-//            recipeL.cookingMinutes = recipe.cookingMinutes ?? 0
-//            recipeL.creditsText = recipe.creditsText ?? ""
-//            recipeL.cuisines = recipe.cuisines!
-//            recipeL.dairyFree = recipe.dairyFree!
-//            recipeL.diets = recipe.diets!
-//            recipeL.dishTypes = recipe.dishTypes!
-//            recipeL.gaps  = recipe.gaps!
-//            recipeL.glutenFree = recipe.glutenFree!
-//            recipeL.healthScore  = recipe.healthScore!
-//            recipeL.id = recipe.id
-//            recipeL.image  = recipe.image!
-//            recipeL.imageType =  recipe.imageType!
-//            recipeL.instructions = recipe.instructions!
-//            recipeL.license = recipe.license!
-//            recipeL.lowFodmap = recipe.lowFodmap!
-//            recipeL.occasions = recipe.occasions!
-//            recipeL.preparationMinutes = recipe.preparationMinutes ?? 0
-//            recipeL.pricePerServing = recipe.pricePerServing!
-//            recipeL.readyInMinutes = recipe.readyInMinutes
-//            recipeL.servings = recipe.servings
-//            recipeL.sourceName = recipe.sourceName!
-//            recipeL.sourceURL = recipe.sourceURL!
-//            recipeL.spoonacularScore = recipe.spoonacularScore!
-//            recipeL.spoonacularSourceURL = recipe.spoonacularSourceURL!
-//            recipeL.summary = recipe.summary!
-//            recipeL.sustainable = recipe.sustainable!
-//            recipeL.title = recipe.title
-//            recipeL.vegan = recipe.vegan!
-//            recipeL.vegetarian = recipe.vegetarian!
-//            recipeL.veryHealthy = recipe.veryHealthy!
-//            recipeL.veryPopular = recipe.veryPopular!
-//            recipeL.weightWatcherSmartPoints = recipe.weightWatcherSmartPoints!
-//            recipeL.extendedIngredients = recipe.extendedIngredients ?? []
-//            recipeL.analyzedInstructions = recipe.analyzedInstructions ?? []
-//            recipeL.originalID = recipe.originalID
-//
-//            result.append(recipeL)
-//        }
-//        return result
-//    }
+    public func checkIsFav(with recipes: [Recipe]) -> [Recipe]{
+                           
+        let realm = try! Realm()
+        let models = realm.objects(RecipeLocalObject.self)
+        var localRecipe = recipes
+        let result = Array(models).map { return Recipe(managedObject: $0) }
+        
+        for (index,item) in localRecipe.enumerated(){
+            if result.firstIndex(where: { $0.id == item.id }) != nil {
+                localRecipe[index].isFav = true
+            }
+        }
+        return localRecipe
+        }
     
 }

@@ -13,7 +13,31 @@ private let reuseIdentifier = "Cell"
 class HomeCollectionVC: UICollectionViewController, LikeDelegate{
     
     func likeButtonTapped(_ recipeId: Int) {
-        
+        var result: [Recipe] = []
+        for recipe in items {
+            if recipe.id == recipeId{
+                result.append(recipe)
+            }
+        }
+        let RL = RecipeLocalService()
+        if result[0].isFav{
+            RL.removeRecipes(with: recipeId)
+            result[0].isFav = false
+            print("no, \(result[0].id)")        }
+        else{
+            let newFavoriteRecipe = RL.convertToRecipeLocalObject(with: result)
+            RL.saveRecipe(with: newFavoriteRecipe)
+
+            result[0].isFav=true
+            print("yes, \(result[0].id)")
+        }
+       
+        DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+                        object: result[0] )
+                }
+  
     }
     
     let networkService = NetworkService()
@@ -35,8 +59,10 @@ class HomeCollectionVC: UICollectionViewController, LikeDelegate{
         super.viewDidLoad()
         
         NetworkService.request(for: Recipes.self, router: Router.getRandom,id: 0, params: [], completion: { [self] (result: Recipes) in
-            items = result.recipes
+            let RL = RecipeLocalService()
+            items = RL.checkIsFav(with: result.recipes)
             self.collectionView.reloadData()
+            
          })
         collectionView.backgroundColor = backroundColor
         collectionView.delegate = self
@@ -45,6 +71,12 @@ class HomeCollectionVC: UICollectionViewController, LikeDelegate{
         collectionView!.contentInset = UIEdgeInsets(top: 16, left: 16, bottom: 10, right: 16)
         
         self.collectionView.register(RecipeCell.self, forCellWithReuseIdentifier: "cellMain")
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.recipeNotification),
+            name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+            object: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -59,6 +91,8 @@ class HomeCollectionVC: UICollectionViewController, LikeDelegate{
                     self.collectionView.reloadData()
                 }
             }
+      //  items.forEach{print("\($0.id) , \($0.isFav)")}
+
     }
 
 

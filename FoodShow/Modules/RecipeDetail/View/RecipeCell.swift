@@ -123,7 +123,7 @@ class RecipeCell: UICollectionViewCell{
        var button = UIButton()
         let icon = UIImage(systemName: "heart.fill")
         button.setImage(icon, for: .normal)
-        button.tintColor = .red
+        //button.tintColor = .red
         button.imageView?.contentMode = .scaleAspectFit
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return button
@@ -148,6 +148,9 @@ class RecipeCell: UICollectionViewCell{
         persons.text = recipe.servings == nil ? "" : "\(recipe.servings!) people"
         titleLbl.text = (recipe.title)
         likeButton.tag = recipe.id
+        if recipe.isFav{
+            likeButton.tintColor = .red
+        }
         pictureView.sd_setImage(with: URL(string: recipe!.image ?? "https://spoonacular.com/recipeImages/716298-556x370.jpg"))
     }
 }

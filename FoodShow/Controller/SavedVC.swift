@@ -12,12 +12,12 @@ class SavedVC: UIViewController, LikeDelegate{
     
     func likeButtonTapped(_ recipeId: Int) {
                 let RL = RecipeLocalService()
-        var recipe = recipes.first { (recipe) -> Bool in
-            recipe.id == recipeId
+                var recipe = recipes.first { (recipe) -> Bool in
+                recipe.id == recipeId
         }
-        recipe?.isFav = false
-        RL.removeRecipes(with: recipeId)
-        DispatchQueue.main.async {
+                        recipe?.isFav = false
+                        RL.removeRecipes(with: recipeId)
+                DispatchQueue.main.async {
                     NotificationCenter.default.post(
                         name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
                         object: recipe  )
@@ -87,6 +87,11 @@ class SavedVC: UIViewController, LikeDelegate{
     func getLocalFavs(){
         let RL = RecipeLocalService()
         self.recipes = RL.extractRecipes()
+        
+        for (index,item) in recipes.enumerated() {
+            if !item.isFav{ recipes[index].isFav = true }
+        }
+        
         collectionView.reloadData()
     }
     

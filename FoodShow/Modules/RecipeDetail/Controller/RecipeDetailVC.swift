@@ -83,9 +83,11 @@ class RecipeDetailViewController: UIViewController {
     }
     
     func checkRecipe(){
-        if(recipe.spoonacularScore == nil){
+        if(recipe.spoonacularScore == nil || recipe.spoonacularScore == -10 ){
             NetworkService.request(for: RecipeFind.self, router: Router.getRecipesById,id: 0, params: [URLQueryItem(name: "ids", value: "\(recipe.id)")], completion: { [self] (result: RecipeFind) in
-                self.recipe = result[0]
+                let RL = RecipeLocalService()
+                self.recipe = RL.checkIsFav(with: result)[0]
+                //self.recipe = result[0]
                 animatedHeader.pictureView.sd_setImage(with: URL(string: recipe.image ?? ""))
 
              tableView.reloadData()
@@ -111,7 +113,6 @@ class RecipeDetailViewController: UIViewController {
     
     @objc func recipeNotification(notification: Notification){
            if let result = notification.object as? Recipe {
-               print(result.isFav)
                recipe.isFav = result.isFav
                viewModel.getRecipeItems(recipe: result)
                tableView.reloadData()
@@ -126,7 +127,6 @@ class RecipeDetailViewController: UIViewController {
                     let favItems: [Recipe] = [self.recipe]
                     let newFavRecipe = RL.convertToRecipeLocalObject(with: favItems)
                     RL.saveRecipe(with: newFavRecipe)
-                    print(recipe)
                     self.recipe.isFav = true
                     viewModel.getRecipeItems(recipe: self.recipe)
                     tableView.reloadData()
