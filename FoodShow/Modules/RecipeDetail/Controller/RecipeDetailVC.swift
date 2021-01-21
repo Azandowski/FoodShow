@@ -12,12 +12,9 @@ import SnapKit
 import SDWebImageSVGCoder
 
 class RecipeDetailViewController: UIViewController {
+    
   
-    var recipe: Recipe!{
-        didSet{
-            animatedHeader.recipe = recipe
-        }
-    }
+    var recipe: Recipe!
     
     var recipeId: Int = 0
 
@@ -113,6 +110,7 @@ class RecipeDetailViewController: UIViewController {
     
     @objc func recipeNotification(notification: Notification){
            if let result = notification.object as? Recipe {
+            print("FOT NOTIFICATION")
                recipe.isFav = result.isFav
                viewModel.getRecipeItems(recipe: result)
                tableView.reloadData()

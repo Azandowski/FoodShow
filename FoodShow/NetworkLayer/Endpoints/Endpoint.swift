@@ -17,7 +17,7 @@ enum Router {
     
     
     var accessToken: String {
-        return "c25961781ff8443db1180c490f831e2d"
+        return "6c2f2b1eded0428582f6add38a448913"
     }
     
     

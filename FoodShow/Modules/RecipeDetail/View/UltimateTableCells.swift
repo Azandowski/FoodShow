@@ -391,7 +391,7 @@ class SimilarListCell: UITableViewCell, ConfigurableCell, LikeDelegate {
                 recipesAll?.forEach{
                     item in if item.id  ==  result.id
                     {
-                      //  item.isFav = result.isFav
+//                        item.isFav = result.isFav
                     }
                 }
             }
@@ -415,7 +415,6 @@ class SimilarListCell: UITableViewCell, ConfigurableCell, LikeDelegate {
             NetworkService.request(for: RecipeFind.self, router: Router.getSimilar,id: id, params: [], completion: { [self] (result: RecipeFind) in
                 let RL = RecipeLocalService()
                 self.recipesAll = RL.checkIsFav(with: result)
-               // self.recipesAll = result
                 self.similarCollectionView.reloadData()
              })
 
@@ -533,9 +532,9 @@ class DetailStackView: UITableViewCell, ConfigurableCell {
     func returnNeedText(recipe:Recipe, id: Int)->String{
         switch id {
         case 1:
-            return "Persons: \(recipe.servings)"
+            return "Persons: \(recipe.servings!)"
         case 2:
-            return "\(recipe.readyInMinutes) minutes"
+            return "\(recipe.readyInMinutes!) minutes"
         default:
             return "Rating: \(recipe.spoonacularScore ?? 0)%"
         }

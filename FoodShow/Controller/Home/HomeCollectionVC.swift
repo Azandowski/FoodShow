@@ -119,7 +119,7 @@ class HomeCollectionVC: UICollectionViewController, LikeDelegate{
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = ResultsViewController()
+        let vc = RecipeDetailViewController(recipe: items[indexPath.row])
         self.navigationController?.pushViewController(vc, animated: true)
     }
 

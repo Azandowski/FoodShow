@@ -8,8 +8,14 @@
 
 import UIKit
 
-class ResultsViewController: UICollectionViewController, UISearchBarDelegate, LikeDelegate{
-
+class ResultsViewController: UICollectionViewController, UISearchBarDelegate, LikeDelegate, UIPopoverPresentationControllerDelegate, FilterApplyDelegate{
+    
+    func filterApplied(filter: Filter) {
+        self.filter = filter
+        print(filter.maxTime)
+    }
+    
+    
     func likeButtonTapped(_ recipeId: Int) {
         var result: [Recipe] = []
         for recipe in resipeResults {
@@ -58,8 +64,6 @@ class ResultsViewController: UICollectionViewController, UISearchBarDelegate, Li
             selector: #selector(self.recipeNotification),
             name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
             object: nil)
-        
-        
     }
     
     
@@ -95,9 +99,24 @@ class ResultsViewController: UICollectionViewController, UISearchBarDelegate, Li
         navigationItem.searchController = self.searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         searchController.searchBar.delegate = self
+        searchController.searchBar.showsBookmarkButton = true
+        searchController.searchBar.setImage(UIImage(named: "filterSelected"), for: .bookmark, state: .normal)
+                
+        
         let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideSearchBar?.textColor = .white
         textFieldInsideSearchBar?.placeholder = "Food name"
+    }
+    
+    var filter = Filter()
+    
+    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
+        let popoverVC = FilterViewController(filter: self.filter)
+        popoverVC.modalPresentationStyle = .popover
+        popoverVC.popoverPresentationController?.permittedArrowDirections = .up
+        popoverVC.popoverPresentationController?.delegate = self
+        popoverVC.delegate = self
+        self.present(popoverVC, animated: true, completion: nil)
     }
     
     
@@ -107,9 +126,11 @@ class ResultsViewController: UICollectionViewController, UISearchBarDelegate, Li
         if let foodName = searchController.searchBar.text {
             timer?.invalidate()
             
-            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
+            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [self] (_) in
                 
-                NetworkService.request(for: ResultSearch.self, router: Router.getSearch,id: 0, params: [URLQueryItem(name: "query", value: foodName)]) { (result: ResultSearch) in
+                NetworkService.request(for: ResultSearch.self, router: Router.getSearch,id: 0, params: [
+                                        URLQueryItem(name: "query", value: foodName),URLQueryItem(name: "cuisine", value: filter.activeCuisinesList.joined(separator: ",")),
+                                        URLQueryItem(name: "type", value: filter.activeTypeList.joined(separator: ",")),URLQueryItem(name: "diet", value: filter.activeDietList.joined(separator: ",")),URLQueryItem(name: "intolerances", value: filter.activeIntoleranceList.joined(separator: ",")),URLQueryItem(name: "maxReadyTime", value: String(filter.maxTime))]) { (result: ResultSearch) in
                     let RL = RecipeLocalService()
                     self.resipeResults = RL.checkIsFav(with: result.results)
 
@@ -160,8 +181,5 @@ class ResultsViewController: UICollectionViewController, UISearchBarDelegate, Li
        required init?(coder aDecoder: NSCoder) {
            fatalError("init(coder:) has not been implemented")
        }
-       
-
-
 }
 
