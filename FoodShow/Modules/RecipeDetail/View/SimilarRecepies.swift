@@ -14,28 +14,25 @@ class SimilarListCell: UITableViewCell, ConfigurableCell, LikeDelegate {
     
     func likeButtonTapped(_ recipeId: Int) {
         var result: [Recipe] = []
-        let recipe = recipesAll!.first { (recipe) -> Bool in
-            recipe.id == recipeId }!
+        let recipe = recipesAll!.first { (recipe) -> Bool in recipe.id == recipeId }!
         result.append(recipe)
-
         let RL = RecipeLocalService()
         if result[0].isFav{
             RL.removeRecipes(with: recipeId)
             result[0].isFav = false
             }
-        else{
+        else {
             let newFavoriteRecipe = RL.convertToRecipeLocalObject(with: result)
             RL.saveRecipe(with: newFavoriteRecipe)
             result[0].isFav=true
-            
-        }
-       
+            }
+        
         DispatchQueue.main.async {
                     NotificationCenter.default.post(
                         name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
                         object: result[0] )
                 }
-//        delegate?.similarUpdated(val: true)
+        
         similarCollectionView.reloadData()
     }
     
