@@ -124,8 +124,6 @@ class HomeViewController: UIViewController, LikeDelegate, UISearchBarDelegate{
                     self.collectionView.reloadData()
                 }
             }
-      //  items.forEach{print("\($0.id) , \($0.isFav)")}
-
     }
     
 }
@@ -139,7 +137,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
            }
 
            return self.recipes.count
-           //return recipes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
