@@ -8,92 +8,155 @@
 
 import UIKit
 
-class HomeStaticTableVC: UITableViewController {
-    @IBOutlet weak var searchField: UITextField!
-    @IBOutlet weak var filterSegmented: UITableViewCell!
+class HomeViewController: UIViewController, LikeDelegate, UISearchBarDelegate{
     
+    func likeButtonTapped(_ recipeId: Int) {
+        var result: [Recipe] = []
+        for recipe in recipes {
+            if recipe.id == recipeId{
+                result.append(recipe)
+            }
+        }
+        let RL = RecipeLocalService()
+        if result[0].isFav{
+            RL.removeRecipes(with: recipeId)
+            result[0].isFav = false
+            print("no, \(result[0].id)")        }
+        else{
+            let newFavoriteRecipe = RL.convertToRecipeLocalObject(with: result)
+            RL.saveRecipe(with: newFavoriteRecipe)
+
+            result[0].isFav=true
+            print("yes, \(result[0].id)")
+        }
+       
+        DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+                        object: result[0] )
+                }
+  
+    }
+    
+    var recipes: [Recipe] = []
+    
+    lazy var collectionView: UICollectionView = {
+              let layout = UICollectionViewFlowLayout()
+              layout.minimumInteritemSpacing = 12
+        layout.minimumLineSpacing = 16
+              layout.scrollDirection = .vertical
+        layout.itemSize = CGSize(width: (self.view.frame.width/2)-22, height: (self.view.frame.width/1.65))
+              let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+              cv.backgroundColor = backroundColor
+              cv.register(RecipeCell.self, forCellWithReuseIdentifier: "cellFav")
+           return cv
+          }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.topItem?.title = "FoodShoow"
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        self.navigationController?.navigationBar.backgroundColor = backroundColor
+        
+    }
+    private let searchController = UISearchController(searchResultsController: nil)
+
+    
+    private func setupSearchBar() {
+        definesPresentationContext = true
+        navigationItem.searchController = self.searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.searchBar.delegate = self
+        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.addTarget(self, action: #selector(searchTapped), for: .touchDown)
+        textFieldInsideSearchBar?.textColor = .white
+        textFieldInsideSearchBar?.placeholder = "Food name"
+    }
+    
+    @objc func searchTapped(sender: UITextField!) {
+        print("stranno")
+        let vc = ResultsViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+       
+       override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isTranslucent = false
+       }
+    
+    let backroundColor = hexStringToUIColor(hex: "0A202B")
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.view.addSubview(collectionView)
+        self.view.backgroundColor = backroundColor
+        collectionView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().inset(16)
+            make.left.equalTo(16)
+            make.right.equalTo(-16)
+            make.bottom.equalToSuperview()
+        }
         
-        filterSegmented.isHidden = true
+        NetworkService.request(for: Recipes.self, router: Router.getRandom,id: 0, params: [], completion: { [self] (result: Recipes) in
+            let RL = RecipeLocalService()
+            recipes = RL.checkIsFav(with: result.recipes)
+            self.collectionView.reloadData()
+            
+         })
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.recipeNotification),
+            name: NSNotification.Name(rawValue: Constants.RECIPE_NOTIFICATION),
+            object: nil)
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        setupSearchBar()
+        
     }
     
-    @IBAction func searchFieldFocus(_ sender: UITextField) {
-        filterSegmented.isHidden = false
+    @objc func recipeNotification(notification: Notification){
+            if let result = notification.object as? Recipe {
+                if let i = recipes.firstIndex(where: { $0.id == result.id }) {
+                    recipes[i].isFav = result.isFav
+                    self.collectionView.reloadData()
+                }
+            }
+      //  items.forEach{print("\($0.id) , \($0.isFav)")}
+
     }
     
+}
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if (self.recipes.count == 0) {
+               self.collectionView.setEmptyMessage("Nothing to show :(")
+           } else {
+               self.collectionView.restore()
+           }
 
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+           return self.recipes.count
+           //return recipes.count
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellFav", for: indexPath) as! RecipeCell
+        cell.delegate = self
+        cell.backgroundColor = backroundColor
+        cell.configure(recipe: recipes[indexPath.row])
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout) -> CGSize {
+        return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/1.5)
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = RecipeDetailViewController(recipe: recipes[indexPath.row])
+        self.navigationController?.pushViewController(vc, animated: true)
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }

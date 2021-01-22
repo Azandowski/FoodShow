@@ -35,34 +35,16 @@
         <!--Delicious food for you-->
         <scene sceneID="mSW-dF-ePj">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" id="jIg-JB-igl" customClass="Home" customModule="FoodShow" customModuleProvider="target" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jhU-Ks-odI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="jIg-JB-igl" customClass="HomeViewController" customModule="FoodShow" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="j0i-Vp-mVk">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ltJ-NV-BLG">
-                                <rect key="frame" x="0.0" y="248" width="414" height="648"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <color key="backgroundColor" red="0.039215686270000001" green="0.12549019610000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <segue destination="e7a-jq-Zel" kind="embed" id="fSS-tt-Ee9"/>
-                                </connections>
-                            </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="02b-42-Sgz">
-                                <rect key="frame" x="0.0" y="140" width="414" height="110"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <color key="backgroundColor" red="0.039215686270000001" green="0.12549019610000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <segue destination="yef-Wp-ght" kind="embed" id="C8d-o8-6KS"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="KEM-8b-7F9"/>
                         <color key="backgroundColor" red="0.039215686270000001" green="0.12549019610000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="Delicious food for you" largeTitleDisplayMode="always" id="Dhq-xD-qlq"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jhU-Ks-odI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2642.0289855072465" y="2059.8214285714284"/>
         </scene>
@@ -344,7 +326,7 @@
             <objects>
                 <collectionViewController id="e7a-jq-Zel" customClass="HomeCollectionVC" customModule="FoodShow" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="qhf-Gw-9Sh">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="648"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.039215686270000001" green="0.12549019610000001" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mOV-eY-Ad8">
