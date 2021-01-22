@@ -27,13 +27,13 @@ class ResultsViewController: UICollectionViewController, UISearchBarDelegate, Li
         if result[0].isFav{
             RL.removeRecipes(with: recipeId)
             result[0].isFav = false
-            print("no, \(result[0].id)")        }
+            }
         else{
             let newFavoriteRecipe = RL.convertToRecipeLocalObject(with: result)
             RL.saveRecipe(with: newFavoriteRecipe)
 
             result[0].isFav=true
-            print("yes, \(result[0].id)")
+           
         }
        
         DispatchQueue.main.async {
@@ -153,7 +153,6 @@ class ResultsViewController: UICollectionViewController, UISearchBarDelegate, Li
            }
 
            return self.resipeResults.count
-           //return recipes.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
