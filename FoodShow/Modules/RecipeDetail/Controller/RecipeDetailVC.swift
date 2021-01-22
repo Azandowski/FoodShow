@@ -11,9 +11,8 @@ import UIKit
 import SnapKit
 import SDWebImageSVGCoder
 
-class RecipeDetailViewController: UIViewController {
-    
-  
+class RecipeDetailViewController: UIViewController{
+
     var recipe: Recipe!
     
     var recipeId: Int = 0
