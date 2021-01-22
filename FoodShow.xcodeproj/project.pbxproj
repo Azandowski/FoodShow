@@ -13,6 +13,7 @@
 		9AB5D41D25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB5D41C25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift */; };
 		9AB5D41E25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB5D41C25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift */; };
 		9AB5D41F25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB5D41C25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift */; };
+		9AD8EB4525BAEB8F00A7F933 /* SimilarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD8EB4425BAEB8F00A7F933 /* SimilarListCell.swift */; };
 		9CC812A9987262862C5B7D8A /* Pods_FoodShowTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D27975E68AC8A1EFC7866E /* Pods_FoodShowTests.framework */; };
 		C80B7961259721C2007DC68E /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80B7960259721C2007DC68E /* Endpoint.swift */; };
 		C80B796425972258007DC68E /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80B796325972258007DC68E /* NetworkService.swift */; };
@@ -73,6 +74,7 @@
 		73E77DFA25966F7D008CB72B /* SavedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedVC.swift; sourceTree = "<group>"; };
 		73EEF48E259A0282007789C0 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9AB5D41C25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeFavoriteCollectionViewCell.swift; sourceTree = "<group>"; };
+		9AD8EB4425BAEB8F00A7F933 /* SimilarListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarListCell.swift; sourceTree = "<group>"; };
 		9EB11925815B814611323BFE /* Pods-FoodShowTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodShowTests.release.xcconfig"; path = "Target Support Files/Pods-FoodShowTests/Pods-FoodShowTests.release.xcconfig"; sourceTree = "<group>"; };
 		C80B7960259721C2007DC68E /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		C80B796325972258007DC68E /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -339,6 +341,7 @@
 				C878F24525A07B4F00976C4A /* UltimateTableCells.swift */,
 				9AB5D41C25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift */,
 				C8794A9A25B3235500FEA4EE /* RecipeCell.swift */,
+				9AD8EB4425BAEB8F00A7F933 /* SimilarListCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -681,6 +684,7 @@
 				C853903B25B7368E004C5991 /* ResultResponse.swift in Sources */,
 				C89A27B725A59A32004770E4 /* Constants.swift in Sources */,
 				9AB5D41D25AC62E500ADCA61 /* RecipeFavoriteCollectionViewCell.swift in Sources */,
+				9AD8EB4525BAEB8F00A7F933 /* SimilarListCell.swift in Sources */,
 				C89A27B925A59A4D004770E4 /* RecipeLocalService.swift in Sources */,
 				C8F15FBA25B9BF92004F1C2F /* FiltterCollectionView.swift in Sources */,
 				C8F15FDB25B9E213004F1C2F /* TimeSlider.swift in Sources */,
